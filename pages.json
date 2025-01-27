@@ -1,0 +1,31 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页"
+      }
+    }
+    // {
+    //   "path": "pages/app-instance/component/component",
+    //   "style": {
+    //     "navigationBarTitleText": "app.component",
+    //     "enablePullDownRefresh": false
+    //   }
+    // }
+  ],
+  "globalStyle": {
+    "pageOrientation": "portrait",
+    "navigationBarTitleText": "",
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#007AFF",
+    "backgroundColor": "#F8F8F8",
+    "backgroundColorTop": "#F4F5F6",
+    "backgroundColorBottom": "#F4F5F6"
+  },
+  "easycom": {
+    "custom": {
+      "custom-(.*)": "@/components/custom-$1.uvue"
+    }
+  }
+}

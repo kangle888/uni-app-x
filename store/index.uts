@@ -1,0 +1,44 @@
+type State = {
+  token: string,
+  name: string,
+  avatar: string,
+  roles: string,
+	permissions: string
+}
+
+const state = reactive({
+  token: '',
+  name: '',
+  avatar: '',
+  roles: '',
+  permissions: ''
+} as State)
+
+const setToken = (token: string) => {
+  state.token = token
+}
+
+const setName = (name: string) => {
+  state.name = name
+}
+
+const setAvatar = (avatar: string) => {
+  state.avatar = avatar
+}
+
+const setRoles = (roles: string) => {
+  state.roles = roles
+}
+
+const setPermissions = (permissions: string) => {
+  state.permissions = permissions
+}
+
+export default {
+  state,
+  setToken,
+  setName,
+  setAvatar,
+  setRoles,
+  setPermissions
+}
