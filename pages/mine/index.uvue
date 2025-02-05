@@ -12,13 +12,10 @@ const app = getApp()
 
 onReady(() => {
   console.error('onReady..')
-  console.error(app.vm.$_store.state.token)
-  app.vm.$_store.setToken('456')
-  console.error(app.vm.$_store.state.token)
 })
 </script>
 
-<style scoped>
+<style>
 .content {
   display: flex;
   flex-direction: column;

@@ -32,5 +32,7 @@
 </script>
 
 <style>
-  /* @import './styles/common.css'; */
+  @import '@/static/fonts/iconfont.css';
+  @import '@/static/styles/global.scss';
+  @import '@/static/styles/colorui.css';
 </style>

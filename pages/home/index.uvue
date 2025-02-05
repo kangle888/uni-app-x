@@ -18,7 +18,7 @@ onReady(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .content {
   display: flex;
   flex-direction: column;
