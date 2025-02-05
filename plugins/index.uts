@@ -2,7 +2,7 @@ import store from '@/store'
 
 export default definePlugin({
   install(app) {
-    app.config.globalProperties.$store = store
+    app.config.globalProperties.$_store = store
     // app.component('CompForAppComponent', CompForAppComponent)
   }
 })
