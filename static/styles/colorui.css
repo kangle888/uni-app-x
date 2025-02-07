@@ -2826,7 +2826,7 @@ scroll-view.cu-steps .cu-item {
 }
 
 .flex-direction {
-	flex-direction: column;
+	flex-direction: row;
 }
 
 .flex-wrap {

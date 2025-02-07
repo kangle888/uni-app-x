@@ -3,14 +3,14 @@
   export default {
     /**
      * 监听应用初始化（应用初始化完成时触发，全局只触发一次）
-     * @param {Object} options
+     * @param {OnLaunchOptions} options
      */
     onLaunch(options: OnLaunchOptions) {
       console.log('App Launch')
     },
     /**
      * 监听应用显示（应用启动，或从后台进入前台显示时触发）
-     * @param {Object} options
+     * @param {OnShowOptions} options
      */
     onShow(options: OnShowOptions) {
       console.log('App Show')
@@ -23,7 +23,7 @@
     },
     /**
      * 监听应用错误（应用发生脚本错误或API调用报错时触发）
-     * @param {Object} error
+     * @param {any} error
      */
     onError(error: any) {
       console.log('App Error', error)
@@ -33,6 +33,5 @@
 
 <style>
   @import '@/static/fonts/iconfont.css';
-  @import '@/static/styles/global.scss';
   @import '@/static/styles/colorui.css';
 </style>

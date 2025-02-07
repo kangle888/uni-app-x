@@ -1,0 +1,82 @@
+import config from '@/config'
+import { getCache } from '@/utils/cache'
+import errorCode from '@/utils/errorCode'
+import { tansParams } from '@/utils'
+
+type IResponse = {
+  code: number,
+  description: string,
+  data: any
+}
+
+const request = (conf: UTSJSONObject) => {
+  // 是否需要设置 token
+  const isToken: boolean = (conf.headers || {}).isToken === false
+  conf.header = conf.header || {}
+  const token = getCache('App-Token')
+  if (token && !isToken) {
+    conf.header!['Authorization'] = 'Bearer ' + token
+  }
+  // get请求映射 params参数
+  if (conf.params) {
+    let url: string = conf.url + '?' + tansParams(conf.params)
+    url = url.slice(0, -1)
+    conf.url = url
+  }
+
+  return new Promise((resolve, reject) => {
+    uni.request<IResponse>({
+      url: config.baseUrl! + conf.url,
+      data: conf.data,
+      header: conf.header,
+      method: conf.method || 'GET',
+      timeout: conf.timeout || 10000,
+      success: (res: RequestSuccess<IResponse>) => {
+        console.error('request success')
+        console.error(typeof res)
+        console.error(res)
+
+        if (res.data != null) {
+          const code: number = res.data.code || 200
+          const msg: string = errorCode[code] || res.data.description || errorCode['default'] as string
+          if (code === 401) {
+            //     showConfirm('登录状态已过期，您可以继续留在该页面，或者重新登录?').then(res => {
+            //       if (res.confirm) {
+            //         store.dispatch('LogOut').then(res => {
+            //           uni.reLaunch({ url: '/pages/login' })
+            //         })
+            //       }
+            //     })
+            reject('无效的会话，或者会话已过期，请重新登录。')
+          } else if (code === 500) {
+            // toast(msg)
+            reject(msg)
+          } else if (code !== 200) {
+            // toast(msg)
+            reject(msg)
+          } else {
+            resolve(res.data.data)
+          }
+        } else {
+          reject('后端接口连接异常')
+        }
+      },
+      fail: (error: RequestFail) => {
+        console.error('request fail')
+        console.error(typeof error)
+        console.error(error)
+        console.error(error.errCode)
+        console.error(error.errMsg)
+
+        let msg: string = error.errMsg
+        if(error.errCode === 5) {
+          msg = '系统接口请求超时'
+        }
+        // toast(msg)
+        reject(error)
+      }
+    })
+  })
+}
+
+export default request

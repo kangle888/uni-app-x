@@ -1,0 +1,26 @@
+/**
+ * 参数处理
+ * @param {UTSJSONObject} params 参数
+ */
+export function tansParams(params: UTSJSONObject) {
+  let result: string = ''
+  UTSJSONObject.keys(params).forEach((propName: string) => {
+    const value = params[propName]
+    var part: string = encodeURIComponent(propName) + '='
+    if (value !== null && value !== '' && typeof (value) !== 'undefined') {
+      // if (typeof value === 'object') {
+      if (value instanceof UTSJSONObject) {
+        UTSJSONObject.keys(value).forEach((key: string) => {
+          if (value[key] !== null && value[key] !== '' && typeof (value[key]) !== 'undefined') {
+            let params: string = propName + '[' + key + ']'
+            var subPart: string = encodeURIComponent(params) + '='
+            result += subPart + encodeURIComponent(value[key]) + '&'
+          }
+        })
+      } else {
+        result += part + encodeURIComponent(value) + '&'
+      }
+    }
+  })
+  return result
+}

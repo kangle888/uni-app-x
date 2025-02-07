@@ -1,0 +1,11 @@
+export function getCache(key: string) {
+  return uni.getStorageSync(key)
+}
+
+export function setCache(key: string, data: any) {
+  return uni.setStorageSync(key, data)
+}
+
+export function removeCache(key: string) {
+  return uni.removeStorageSync(key)
+}
