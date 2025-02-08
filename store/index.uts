@@ -14,23 +14,23 @@ const state = reactive({
   permissions: ''
 } as IState)
 
-const setToken = (token: string) => {
+const setToken = (token: string): void => {
   state.token = token
 }
 
-const setName = (name: string) => {
+const setName = (name: string): void => {
   state.name = name
 }
 
-const setAvatar = (avatar: string) => {
+const setAvatar = (avatar: string): void => {
   state.avatar = avatar
 }
 
-const setRoles = (roles: string) => {
+const setRoles = (roles: string): void => {
   state.roles = roles
 }
 
-const setPermissions = (permissions: string) => {
+const setPermissions = (permissions: string): void => {
   state.permissions = permissions
 }
 

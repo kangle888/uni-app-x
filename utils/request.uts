@@ -9,29 +9,29 @@ type IResponse = {
   data: any
 }
 
-const request = (conf: UTSJSONObject) => {
+const request = (conf: UTSJSONObject): Promise<any> => {
   // 是否需要设置 token
   const isToken: boolean = (conf.headers || {}).isToken === false
   conf.header = conf.header || {}
-  const token = getCache('App-Token')
-  if (token && !isToken) {
+  const token = getCache('App-Token') as string
+  if (token.length > 0 && !isToken) {
     conf.header!['Authorization'] = 'Bearer ' + token
   }
   // get请求映射 params参数
-  if (conf.params) {
+  if (typeof (conf.params) !== 'undefined') {
     let url: string = conf.url + '?' + tansParams(conf.params)
     url = url.slice(0, -1)
     conf.url = url
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject): void => {
     uni.request<IResponse>({
       url: config.baseUrl! + conf.url,
       data: conf.data,
       header: conf.header,
       method: conf.method || 'GET',
       timeout: conf.timeout || 10000,
-      success: (res: RequestSuccess<IResponse>) => {
+      success: (res: RequestSuccess<IResponse>): void => {
         console.error('request success')
         console.error(typeof res)
         console.error(res)
@@ -61,7 +61,7 @@ const request = (conf: UTSJSONObject) => {
           reject('后端接口连接异常')
         }
       },
-      fail: (error: RequestFail) => {
+      fail: (error: RequestFail): void => {
         console.error('request fail')
         console.error(typeof error)
         console.error(error)

@@ -10,7 +10,7 @@
 <script lang="uts" setup>
   const app = getApp()
 
-  onReady(() => {
+  onReady((): void => {
     console.error('onReady..')
   })
 </script>

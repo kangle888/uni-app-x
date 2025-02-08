@@ -10,11 +10,11 @@
 <script lang="uts" setup>
   const app = getApp()
 
-  onReady(() => {
-    console.error('onReady..')
-    console.error(app.vm.$_store.state.token)
-    app.vm.$_store.setToken('456')
-    console.error(app.vm.$_store.state.token)
+  onReady((): void => {
+    // console.error('onReady..')
+    // console.error(app.vm.$_store.state.token)
+    // app.vm.$_store.setToken('456')
+    // console.error(app.vm.$_store.state.token)
   })
 </script>
 

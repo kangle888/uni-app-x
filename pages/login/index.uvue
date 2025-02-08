@@ -46,31 +46,31 @@
     uuid: ''
   })
 
-  onLoad(() => {
-    getCode()
+  onLoad((): void => {
+    // getCode()
   })
 
   /**
    * 获取验证码
    */
-  function getCode() {
-    getCaptcha().then((res: UTSJSONObject) => {
-      captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
-      if (captchaEnabled.value) {
-        codeUrl.value = 'data:image/gif;base64,' + res.img
-        loginForm.uuid = res.uuid
-      }
-    })
+  function getCode(): void {
+    // getCaptcha().then((res: UTSJSONObject): void => {
+    //   captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
+    //   if (captchaEnabled.value) {
+    //     codeUrl.value = 'data:image/gif;base64,' + res.img
+    //     loginForm.uuid = res.uuid
+    //   }
+    // })
   }
 
   /**
    * 用户协议
    */
-  function handleUserAgrement() {
+  function handleUserAgrement(): void {
     
   }
 
-  function handleLogin() {
+  function handleLogin(): void {
     
   }
 </script>
@@ -119,6 +119,7 @@
         .input {
           width: 90%;
           padding-left: 15px;
+          text-align: left;
         }
       }
 
