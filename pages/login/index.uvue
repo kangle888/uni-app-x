@@ -6,16 +6,17 @@
     </view>
     <view class="login-form-content">
       <view class="input-item flex-direction align-center">
-        <view class="iconfont icon-user icon"></view>
+        <uni-icons class="icon" type="person" size="22"></uni-icons>
         <input v-model="loginForm.username" type="text" class="input" placeholder="请输入账号" />
       </view>
       <view class="input-item flex-direction align-center">
-        <view class="iconfont icon-password icon"></view>
-        <input v-model="loginForm.password" type="password" class="input" placeholder="请输入密码" />
+        <uni-icons class="icon" type="locked" size="22"></uni-icons>
+        <input v-model="loginForm.password" type="safe-password" class="input" :password="showPwd" placeholder="请输入密码" />
+        <uni-icons :type="showPwd ? 'eye-filled' : 'eye-slash-filled'" size="23" color="#0081ff" @click="showPwd = !showPwd"></uni-icons>
       </view>
       <view class="flex-direction align-center" v-if="captchaEnabled">
         <view class="input-item flex-direction align-center" style="width: 58%;">
-          <view class="iconfont icon-code icon"></view>
+          <uni-icons class="icon" type="image" size="22"></uni-icons>
           <input v-model="loginForm.code" type="text" class="input" placeholder="请输入验证码" />
         </view>
         <view class="login-code">
@@ -37,6 +38,7 @@
   import { getCaptcha } from '@/api/login'
 
   const codeUrl = ref('')
+  const showPwd = ref(true)
   const captchaEnabled = ref(true)
 
   const loginForm = reactive({
@@ -44,7 +46,7 @@
     password: 'admin123',
     code: '',
     uuid: ''
-  })
+  } as UTSJSONObject)
 
   onLoad((): void => {
     // getCode()
@@ -76,10 +78,6 @@
 </script>
 
 <style lang="scss">
-  page {
-    background-color: #ffffff;
-  }
-
   .normal-login-container {
     width: 100%;
 
@@ -111,13 +109,11 @@
         border-radius: 20px;
 
         .icon {
-          font-size: 21px;
           margin-left: 10px;
-          color: #999;
         }
 
         .input {
-          width: 90%;
+          width: 80%;
           padding-left: 15px;
           text-align: left;
         }
@@ -126,6 +122,7 @@
       .login-btn {
         margin-top: 40px;
         height: 45px;
+        line-height: 45px;
       }
 
       .xieyi {

@@ -32,6 +32,5 @@
 </script>
 
 <style>
-  @import '@/static/fonts/iconfont.css';
-  @import '@/static/styles/colorui.css';
+  @import '@/static/styles/common.scss';
 </style>
