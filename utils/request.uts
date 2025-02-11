@@ -6,7 +6,7 @@ import { tansParams } from '@/utils'
 type IResponse = {
   code: number,
   description: string,
-  data: any
+  data?: any
 }
 
 const request = (conf: UTSJSONObject): Promise<any> => {

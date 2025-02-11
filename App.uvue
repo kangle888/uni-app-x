@@ -32,5 +32,5 @@
 </script>
 
 <style>
-  @import '@/static/styles/common.scss';
+  @import '@/static/styles/common.css';
 </style>
