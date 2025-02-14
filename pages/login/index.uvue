@@ -37,6 +37,12 @@
 <script lang="uts" setup>
   import { getCaptcha } from '@/api/login'
 
+const app = getApp();
+console.error((app.vm!.$store['state'] as UTSJSONObject)['token']);
+// app.vm!.$store['setToken']('123')
+// (app.vm!.$store['setToken'] as Function<any>)('123')
+// console.error((app.vm!.$store['state'] as UTSJSONObject)['token'])
+
   const codeUrl = ref('')
   const hidePwd = ref(true)
   const captchaEnabled = ref(true)
@@ -48,19 +54,16 @@
     uuid: ''
   } as UTSJSONObject)
 
-  onLoad((): void => {
-    getCode()
-  })
-
   /**
    * 获取验证码
    */
   function getCode(): void {
-    getCaptcha().then((res: UTSJSONObject): void => {
-      captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
+    getCaptcha().then((response: any): void => {
+      const res = response as UTSJSONObject
+      captchaEnabled.value = res['captchaEnabled'] != null ? res['captchaEnabled'] as boolean : true
       if (captchaEnabled.value) {
-        codeUrl.value = 'data:image/gif;base64,' + res.img
-        loginForm.uuid = res.uuid
+        codeUrl.value = 'data:image/gif;base64,' + res['img']
+        loginForm.uuid = res['uuid']
       }
     })
   }
@@ -75,6 +78,8 @@
   function handleLogin(): void {
     
   }
+
+  getCode()
 </script>
 
 <style lang="scss">
@@ -94,7 +99,6 @@
     }
 
     .login-form-content {
-      text-align: center;
       margin: 20px auto;
       margin-top: 15%;
       width: 80%;

@@ -2,6 +2,21 @@ import config from '@/config'
 import { getCache } from '@/utils/cache'
 import errorCode from '@/utils/errorCode'
 import { tansParams } from '@/utils'
+import modal from '@/utils/modal'
+
+export type IHeaders = {
+  isToken: boolean
+}
+
+export type IRequest = {
+  url: string,
+  headers?: IHeaders,
+  header?: UTSJSONObject,
+  method?: string,
+  timeout?: number,
+  params?: UTSJSONObject,
+  data?: UTSJSONObject
+}
 
 type IResponse = {
   code: number,
@@ -9,36 +24,36 @@ type IResponse = {
   data?: any
 }
 
-const request = (conf: UTSJSONObject): Promise<any> => {
+const request = (conf: IRequest): Promise<any> => {
   // 是否需要设置 token
-  const isToken: boolean = (conf.headers || {}).isToken === false
-  conf.header = conf.header || {}
-  const token = getCache('App-Token') as string
+  const isToken: boolean = conf.headers?.isToken === false
+  conf.header = conf.header ?? {}
+  const token: string = getCache('App-Token') as string
   if (token.length > 0 && !isToken) {
-    conf.header!['Authorization'] = 'Bearer ' + token
+    (conf.header as UTSJSONObject)['Authorization'] = 'Bearer ' + token
   }
   // get请求映射 params参数
-  if (typeof (conf.params) !== 'undefined') {
-    let url: string = conf.url + '?' + tansParams(conf.params)
+  if (conf.params != null) {
+    let url: string = conf.url + '?' + tansParams(conf.params as UTSJSONObject)
     url = url.slice(0, -1)
     conf.url = url
   }
 
-  return new Promise((resolve, reject): void => {
+  return new Promise<any>((resolve: (value: any) => void, reject: (error?: any) => void) => {
     uni.request<IResponse>({
-      url: config.baseUrl! + conf.url,
+      url: config.baseUrl as string + conf.url,
       data: conf.data,
       header: conf.header,
-      method: conf.method || 'GET',
-      timeout: conf.timeout || 10000,
+      method: conf.method ?? 'GET',
+      timeout: conf.timeout ?? 10000,
       success: (res: RequestSuccess<IResponse>): void => {
         console.error('request success')
         console.error(typeof res)
         console.error(res)
 
         if (res.data != null) {
-          const code: number = res.data.code || 200
-          const msg: string = errorCode[code] || res.data.description || errorCode['default'] as string
+          const code: number = res.data!.code ?? 200
+          const msg: string = errorCode[code] != null ? errorCode[code] as string : (res.data!.description === '' ? errorCode['default'] as string : res.data!.description)
           if (code === 401) {
             //     showConfirm('登录状态已过期，您可以继续留在该页面，或者重新登录?').then(res => {
             //       if (res.confirm) {
@@ -55,10 +70,10 @@ const request = (conf: UTSJSONObject): Promise<any> => {
             // toast(msg)
             reject(msg)
           } else {
-            resolve(res.data.data)
+            resolve(res.data!.data as any)
           }
         } else {
-          reject('后端接口连接异常')
+          reject('网络异常')
         }
       },
       fail: (error: RequestFail): void => {
@@ -71,6 +86,10 @@ const request = (conf: UTSJSONObject): Promise<any> => {
         let msg: string = error.errMsg
         if(error.errCode === 5) {
           msg = '系统接口请求超时'
+        } else if (error.errCode === 1000) {
+          msg = '后端接口连接异常'
+        } else if (error.errCode === 600003) {
+          msg = '网络中断'
         }
         // toast(msg)
         reject(error)

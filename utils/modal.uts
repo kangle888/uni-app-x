@@ -1,0 +1,38 @@
+export default {
+  /**
+   * 消息提示
+   * @param {string} title 提示的内容
+   * @param {number} duration 提示的延迟时间（单位毫秒）
+   */
+  msg(title: string, duration?: number): void {
+    uni.showToast({
+      title: title,
+      icon: 'none',
+      duration: duration ?? 1500
+    })
+  },
+  /**
+   * 错误消息
+   * @param {string} title 提示的内容
+   * @param {number} duration 提示的延迟时间（单位毫秒）
+   */
+  msgError(title: string, duration?: number): void {
+    uni.showToast({
+      title: title,
+      icon: 'error',
+      duration: duration ?? 1500
+    })
+  },
+  /**
+   * 成功消息
+   * @param {string} title 提示的内容
+   * @param {number} duration 提示的延迟时间（单位毫秒）
+   */
+  msgSuccess(title: string, duration?: number): void {
+    uni.showToast({
+      title: title,
+      icon: 'success',
+      duration: duration ?? 1500
+    })
+  }
+} as UTSJSONObject

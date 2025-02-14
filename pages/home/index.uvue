@@ -12,9 +12,9 @@
 
   onReady((): void => {
     // console.error('onReady..')
-    // console.error(app.vm.$_store.state.token)
-    // app.vm.$_store.setToken('456')
-    // console.error(app.vm.$_store.state.token)
+    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token'])
+    // app.vm!.$store.setToken('456')
+    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token'])
   })
 </script>
 

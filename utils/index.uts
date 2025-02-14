@@ -12,8 +12,8 @@ export function tansParams(params: UTSJSONObject): string {
       if (value instanceof UTSJSONObject) {
         UTSJSONObject.keys(value).forEach((key: string) => {
           if (value[key] !== null && value[key] !== '' && typeof (value[key]) !== 'undefined') {
-            let params: string = propName + '[' + key + ']'
-            var subPart: string = encodeURIComponent(params) + '='
+            let vParams: string = propName + '[' + key + ']'
+            var subPart: string = encodeURIComponent(vParams) + '='
             result += subPart + encodeURIComponent(value[key] as string) + '&'
           }
         })

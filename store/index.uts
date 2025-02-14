@@ -1,18 +1,10 @@
-type IState = {
-  token: string,
-  name: string,
-  avatar: string,
-  roles: string,
-	permissions: string
-}
-
 const state = reactive({
   token: '',
   name: '',
   avatar: '',
   roles: '',
   permissions: ''
-} as IState)
+} as UTSJSONObject)
 
 const setToken = (token: string): void => {
   state.token = token

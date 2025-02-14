@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request, { IRequest, IHeaders } from '@/utils/request'
 
 /**
  * 登录方法
@@ -13,15 +13,15 @@ export function login(username: string, password: string, code: string, uuid: st
     password,
     code,
     uuid
-  }
+  } as UTSJSONObject
   return request({
     url: '/login',
     headers: {
       isToken: false
-    },
+    } as IHeaders,
     method: 'POST',
     data: data
-  })
+  } as IRequest)
 }
 
 /**
@@ -31,7 +31,7 @@ export function getInfo(): Promise<any> {
   return request({
     url: '/getInfo',
     method: 'GET'
-  })
+  } as IRequest)
 }
 
 /**
@@ -41,7 +41,7 @@ export function logout(): Promise<any> {
   return request({
     url: '/logout',
     method: 'POST'
-  })
+  } as IRequest)
 }
 
 /**
@@ -52,8 +52,8 @@ export function getCaptcha(): Promise<any> {
     url: '/captcha',
     headers: {
       isToken: false
-    },
+    } as IHeaders,
     method: 'GET',
     timeout: 20000
-  })
+  } as IRequest)
 }
