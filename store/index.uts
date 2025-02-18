@@ -1,3 +1,6 @@
+import { logout as logoutApi } from '@/api/login'
+import { setCache, removeCache } from '@/utils/cache'
+
 const state = reactive({
   token: '',
   name: '',
@@ -26,11 +29,28 @@ const setPermissions = (permissions: string): void => {
   state.permissions = permissions
 }
 
+
+// 退出系统
+const logout = (): Promise<any | null> => {
+  return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
+    logoutApi().then((): void => {
+      setToken('')
+      setRoles('')
+      setPermissions('')
+      removeCache('App-Token')
+      resolve(null)
+    }).catch((error?: any) => {
+      reject(error)
+    })
+  })
+}
+
 export default {
   state,
   setToken,
   setName,
   setAvatar,
   setRoles,
-  setPermissions
+  setPermissions,
+  logout
 } as UTSJSONObject

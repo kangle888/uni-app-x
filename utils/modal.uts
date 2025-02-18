@@ -2,9 +2,9 @@ export default {
   /**
    * 消息提示
    * @param {string} title 提示的内容
-   * @param {number} duration 提示的延迟时间（单位毫秒）
+   * @param {number | null} duration 提示的延迟时间（单位毫秒）
    */
-  msg(title: string, duration?: number): void {
+  msg(title: string, duration: number | null): void {
     uni.showToast({
       title: title,
       icon: 'none',
@@ -14,9 +14,9 @@ export default {
   /**
    * 错误消息
    * @param {string} title 提示的内容
-   * @param {number} duration 提示的延迟时间（单位毫秒）
+   * @param {number | null} duration 提示的延迟时间（单位毫秒）
    */
-  msgError(title: string, duration?: number): void {
+  msgError(title: string, duration: number | null): void {
     uni.showToast({
       title: title,
       icon: 'error',
@@ -26,13 +26,45 @@ export default {
   /**
    * 成功消息
    * @param {string} title 提示的内容
-   * @param {number} duration 提示的延迟时间（单位毫秒）
+   * @param {number | null} duration 提示的延迟时间（单位毫秒）
    */
-  msgSuccess(title: string, duration?: number): void {
+  msgSuccess(title: string, duration: number | null): void {
     uni.showToast({
       title: title,
       icon: 'success',
       duration: duration ?? 1500
+    })
+  },
+  /**
+   * 弹出提示
+   * @param {string} content 提示的内容
+   */
+  alert(content: string): void {
+    uni.showModal({
+      title: '提示',
+      content: content,
+      showCancel: false
+    })
+  },
+  /**
+   * 确认窗体
+   * @param {string} content 提示的内容
+   * @return {Promise<boolean>}
+   */
+  confirm(content: string): Promise<boolean> {
+    return new Promise<boolean>((resolve: (value: boolean) => void, reject: (error?: any) => void) => {
+      uni.showModal({
+        title: '提示',
+        content: content,
+        success: (res: ShowModalSuccess): void => {
+          if (res.confirm) {
+            resolve(true)
+          }
+          if (res.cancel) {
+            reject(false)
+          }
+        }
+      })
     })
   }
 } as UTSJSONObject

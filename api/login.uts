@@ -40,7 +40,7 @@ export function getInfo(): Promise<any> {
 export function logout(): Promise<any> {
   return request({
     url: '/logout',
-    method: 'POST'
+    method: 'DELETE'
   } as IRequest)
 }
 

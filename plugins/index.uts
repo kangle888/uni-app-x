@@ -5,6 +5,7 @@ export default definePlugin({
   install(app) {
     app.config.globalProperties.$store = store
     app.config.globalProperties.$modal = modal
+
     // app.component('CompForAppComponent', CompForAppComponent)
   }
 })

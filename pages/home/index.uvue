@@ -11,10 +11,15 @@
   const app = getApp()
 
   onReady((): void => {
-    // console.error('onReady..')
-    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token'])
-    // app.vm!.$store.setToken('456')
-    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token'])
+    console.error('onReady..')
+
+    // type IModalMsg = (title: string, duration: number | null) => void
+
+    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token']);
+    // (app.vm!.$store['setToken'] as (token: string) => void)('123')
+    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token']);
+
+    // (app.vm!.$modal['msgSuccess'] as IModalMsg)('123', null)
   })
 </script>
 

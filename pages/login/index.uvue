@@ -37,12 +37,6 @@
 <script lang="uts" setup>
   import { getCaptcha } from '@/api/login'
 
-const app = getApp();
-console.error((app.vm!.$store['state'] as UTSJSONObject)['token']);
-// app.vm!.$store['setToken']('123')
-// (app.vm!.$store['setToken'] as Function<any>)('123')
-// console.error((app.vm!.$store['state'] as UTSJSONObject)['token'])
-
   const codeUrl = ref('')
   const hidePwd = ref(true)
   const captchaEnabled = ref(true)
