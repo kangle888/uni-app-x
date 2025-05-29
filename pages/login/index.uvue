@@ -24,7 +24,7 @@
         </view>
       </view>
       <view class="login-btn">
-        <button type="primary" @click="handleLogin">登录</button>
+        <button type="primary" @click="handlePwdLogin">登录</button>
       </view>
       <view class="xieyi flex-direction justify-center">
         <text class="text-info">登录即代表同意</text>
@@ -36,6 +36,8 @@
 
 <script lang="uts" setup>
   import { getCaptcha } from '@/api/login'
+
+  const app = getApp()
 
   const codeUrl = ref('')
   const hidePwd = ref(true)
@@ -53,7 +55,7 @@
    */
   function getCode(): void {
     getCaptcha().then((response: any): void => {
-      const res = response as UTSJSONObject
+      const res: UTSJSONObject = response as UTSJSONObject
       captchaEnabled.value = res['captchaEnabled'] != null ? res['captchaEnabled'] as boolean : true
       if (captchaEnabled.value) {
         codeUrl.value = 'data:image/gif;base64,' + res['img']
@@ -82,8 +84,27 @@
     })
   }
 
-  function handleLogin(): void {
-    
+  /**
+   * 登录成功
+   */
+  function loginSuccess() {
+    (app.vm!.$store['getUserInfo'] as () => Promise<any | null>)().then((): void => {
+      // 跳转首页
+      (app.vm!.$tab['reLaunch'] as (url: string) => void)('/pages/home/index')
+    })
+  }
+
+  /**
+   * 账号密码登录
+   */
+  function handlePwdLogin(): void {
+    (app.vm!.$store['login'] as (userInfo: UTSJSONObject) => Promise<any | null>)(loginForm).then((): void => {
+      loginSuccess()
+    }).catch(() => {
+      if (captchaEnabled.value) {
+        getCode()
+      }
+    })
   }
 
   getCode()

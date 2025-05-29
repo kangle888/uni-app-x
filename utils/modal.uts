@@ -56,7 +56,7 @@ export default {
       uni.showModal({
         title: '提示',
         content: content,
-        success: (res: ShowModalSuccess): void => {
+        success: (res: UniShowModalResult): void => {
           if (res.confirm) {
             resolve(true)
           }

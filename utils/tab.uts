@@ -1,0 +1,44 @@
+export default {
+  /**
+   * 保留当前页面，跳转到应用内的某个页面
+   * @param {string} url 需要跳转的应用内非 tabBar 的页面的路径，路径后可以带参数
+   */
+  navigateTo(url: string): void {
+    uni.navigateTo({
+      url: url
+    })
+  },
+  /**
+   * 关闭当前页面，跳转到应用内的某个页面
+   * @param {string} url 需要跳转的应用内非 tabBar 的页面的路径，路径后可以带参数
+   */
+  redirectTo(url: string): void {
+    uni.redirectTo({
+      url: url
+    })
+  },
+  /**
+   * 关闭所有页面，打开到应用内的某个页面
+   * @param {string} url 需要跳转的应用内页面路径，路径后可以带参数
+   */
+  reLaunch(url: string): void {
+    uni.reLaunch({
+      url: url
+    })
+  },
+  /**
+   * 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
+   * @param {string} url 需要跳转的 tabBar 页面的路径，路径后不能带参数
+   */
+  switchTab(url: string): void {
+    uni.switchTab({
+      url: url
+    })
+  },
+  /**
+   * 关闭当前页面，返回上一页面或多级页面
+   */
+  navigateBack(): void {
+    uni.navigateBack()
+  }
+}

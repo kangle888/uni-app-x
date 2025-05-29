@@ -15,7 +15,7 @@ export function login(username: string, password: string, code: string, uuid: st
     uuid
   } as UTSJSONObject
   return request({
-    url: '/login',
+    url: '/app-login',
     headers: {
       isToken: false
     } as IHeaders,
@@ -27,9 +27,9 @@ export function login(username: string, password: string, code: string, uuid: st
 /**
  * 获取用户详细信息
  */
-export function getInfo(): Promise<any> {
+export function getUserInfo(): Promise<any> {
   return request({
-    url: '/getInfo',
+    url: '/getUserInfo',
     method: 'GET'
   } as IRequest)
 }

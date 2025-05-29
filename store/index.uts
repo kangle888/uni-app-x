@@ -1,12 +1,12 @@
-import { logout as logoutApi } from '@/api/login'
+import { login as loginApi, getUserInfo as getUserInfoApi, logout as logoutApi } from '@/api/login'
 import { setCache, removeCache } from '@/utils/cache'
 
 const state = reactive({
   token: '',
   name: '',
   avatar: '',
-  roles: '',
-  permissions: ''
+  roles: [] as Array<string>,
+  permissions: [] as Array<string>
 } as UTSJSONObject)
 
 const setToken = (token: string): void => {
@@ -21,22 +21,57 @@ const setAvatar = (avatar: string): void => {
   state.avatar = avatar
 }
 
-const setRoles = (roles: string): void => {
+const setRoles = (roles: Array<string>): void => {
   state.roles = roles
 }
 
-const setPermissions = (permissions: string): void => {
+const setPermissions = (permissions: Array<string>): void => {
   state.permissions = permissions
 }
 
+
+// 登录
+const login = (userInfo: UTSJSONObject): Promise<any | null> => {
+  const username: string = userInfo['username'] as string
+  const password: string = userInfo['password'] as string
+  const code: string = userInfo['code'] as string
+  const uuid: string = userInfo['uuid'] as string
+  return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
+    loginApi(username, password, code, uuid).then((response: any): void => {
+      const res: UTSJSONObject = response as UTSJSONObject
+      setCache('App-Token', res['access_token'] as string)
+      setToken(res['access_token'] as string)
+      resolve(null)
+    }).catch((error?: any) => {
+      reject(error)
+    })
+  })
+}
+
+// 获取登录用户信息
+const getUserInfo = (): Promise<any | null> => {
+  return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
+    getUserInfoApi().then((response: any): void => {
+      const res: UTSJSONObject = response as UTSJSONObject
+      const user: UTSJSONObject = res['user'] as UTSJSONObject
+      setRoles(res['roles'] as Array<string>)
+      setPermissions(res['permissions'] as Array<string>)
+      setName(user['nickName'] as string)
+      setAvatar(user['avatar'] != null ? user['avatar'] as string : '@/static/images/logo/logo.png')
+      resolve(null)
+    }).catch((error?: any) => {
+      reject(error)
+    })
+  })
+}
 
 // 退出系统
 const logout = (): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
     logoutApi().then((): void => {
       setToken('')
-      setRoles('')
-      setPermissions('')
+      setRoles([])
+      setPermissions([])
       removeCache('App-Token')
       resolve(null)
     }).catch((error?: any) => {
@@ -52,5 +87,7 @@ export default {
   setAvatar,
   setRoles,
   setPermissions,
+  login,
+  getUserInfo,
   logout
 } as UTSJSONObject

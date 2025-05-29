@@ -27,7 +27,7 @@ type IResponse = {
 
 const request = (conf: IRequest): Promise<any> => {
   // 是否需要设置 token
-  const isToken: boolean = conf.headers?.isToken === false
+  const isToken: boolean = conf.headers?.isToken == false
   conf.header = conf.header ?? {}
   const token: string = getCache('App-Token') as string
   if (token.length > 0 && !isToken) {
@@ -47,18 +47,18 @@ const request = (conf: IRequest): Promise<any> => {
       url: config.baseUrl as string + conf.url,
       data: conf.data,
       header: conf.header,
-      method: conf.method ?? 'GET',
+      method: (conf.method ?? 'GET') as RequestMethod,
       timeout: conf.timeout ?? 10000,
       success: (res: RequestSuccess<IResponse>): void => {
         if (res.data != null) {
-          const code: number = res.data!.code ?? 200
+          const code: number = res.data!.code | 200
           const msg: string = errorCode[code] != null ? errorCode[code] as string : (res.data!.description === '' ? errorCode['default'] as string : res.data!.description)
-          if (code === 401) {
+          if (code == 401) {
             uni.showModal({
               title: '提示',
               content: '登录状态已过期，您可以继续留在该页面，或者重新登录?',
               confirmText: '重新登录',
-              success: (res: ShowModalSuccess): void => {
+              success: (res: UniShowModalResult): void => {
                 if (res.confirm) {
                   (store['logout'] as () => Promise<any | null>)().then(() => {
                     uni.reLaunch({ url: '/pages/login/index' })
@@ -68,10 +68,10 @@ const request = (conf: IRequest): Promise<any> => {
               }
             })
             reject('无效的会话，或者会话已过期，请重新登录。')
-          } else if (code === 500) {
+          } else if (code == 500) {
             msgError(msg, 2500)
             reject(msg)
-          } else if (code !== 200) {
+          } else if (code != 200) {
             msgError(msg, 2500)
             reject(msg)
           } else {
@@ -83,11 +83,11 @@ const request = (conf: IRequest): Promise<any> => {
       },
       fail: (error: RequestFail): void => {
         let msg: string = error.errMsg
-        if(error.errCode === 5) {
+        if(error.errCode == 5) {
           msg = '系统接口请求超时'
-        } else if (error.errCode === 1000) {
+        } else if (error.errCode == 1000) {
           msg = '后端接口连接异常'
-        } else if (error.errCode === 600003) {
+        } else if (error.errCode == 600003) {
           msg = '网络中断'
         }
         msgError(msg, 2500)
