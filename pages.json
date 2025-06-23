@@ -23,6 +23,12 @@
       "style": {
         "navigationBarTitleText": "我的"
       }
+    },
+    {
+      "path": "components/privacy/privacy",
+      "style": {
+        "navigationBarTitleText": "用户协议及隐私协议"
+      }
     }
   ],
   "tabBar": {

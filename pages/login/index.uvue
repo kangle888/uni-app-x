@@ -28,7 +28,7 @@
       </view>
       <view class="xieyi flex-direction justify-center">
         <text class="text-info">登录即代表同意</text>
-        <text class="text-primary" @click="handleUserAgrement">《用户协议》</text>
+        <text class="text-primary" @click="handlePrivacy">《用户协议及隐私协议》</text>
       </view>
     </view>
   </view>
@@ -65,23 +65,19 @@
   }
 
   /**
-   * 用户协议
+   * 用户协议及隐私协议
    */
-  function handleUserAgrement(): void {
-    uni.showModal({
-      title: '用户协议',
-      content: `
-本用户服务协议（以下简称“本协议”）旨在明确您（以下简称“用户”）与本软件之间的权利和义务，确保您在使用时能够享受到优质的体验，请仔细阅读本协议，以确保您充分了解并同意相关条款和条件。
-
-1、用户应遵守相关法律法规和道德准则，合理使用服务。
-
-2、用户不得利用服务进行任何违法、违规或不合理的活动，包括但不限于发布虚假信息、进行网络欺诈、侵犯他人权益等。
-
-3、用户应妥善保管个人账号和密码，不得将其泄露给他人使用。
-
-      `,
-      showCancel: false
+  function handlePrivacy(): void {
+    // #ifdef APP
+    uni.openDialogPage({
+      url: '/components/privacy/privacy'
     })
+    // #endif
+    
+    // 微信小程序不支持 openDialogPage，采用打开新页面的方式
+    // #ifdef MP-WEIXIN
+    (app.vm!.$tab['navigateTo'] as (url: string) => void)('/components/privacy/privacy')
+    // #endif
   }
 
   /**
