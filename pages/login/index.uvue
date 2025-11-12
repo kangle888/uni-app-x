@@ -2,7 +2,7 @@
   <view class="normal-login-container">
     <view class="logo-content align-center">
       <image class="logo-img" src="@/static/images/logo/logo.png" mode="widthFix" />
-      <text class="title">轻舟移动端登录</text>
+      <text class="title">若依移动端登录</text>
     </view>
     <view class="login-form-content">
       <view class="input-item flex-direction align-center">

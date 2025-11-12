@@ -1,3 +1,3 @@
-# qingzhou-app
+# ruoyi-app
 
-使用 HBuilderX（v4.64+）打开项目。
+基于uni-app x，使用 HBuilderX（v4.76+）打开项目。
