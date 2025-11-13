@@ -1,11 +1,14 @@
 {
-	"name": "ruoyi-app",
 	"appid": "",
+	"name": "ruoyi-app",
 	"description": "若依管理系统",
 	"versionName": "1.0.0",
 	"versionCode": 1,
 	"uni-app-x": {
 		"singleThread": true
+	},
+	"app": {
+		"defaultAppTheme": "light"
 	},
 	"mp-weixin": {
 		"appid": "",
@@ -14,22 +17,5 @@
 		},
 		"usingComponents": true
 	},
-	"mp-alipay": {
-		"usingComponents": true
-	},
-	"mp-baidu": {
-		"usingComponents": true
-	},
-	"mp-toutiao": {
-		"usingComponents": true
-	},
-	"uniStatistics": {
-		"enable": false
-	},
-	"vueVersion": "3",
-	"web": {
-		"router": {
-			"mode": ""
-		}
-	}
+	"vueVersion": "3"
 }
