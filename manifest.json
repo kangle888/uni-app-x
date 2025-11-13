@@ -10,6 +10,22 @@
 	"app": {
 		"defaultAppTheme": "light"
 	},
+	"app-android": {
+		"distribute": {
+			"modules": {},
+			"icons": {},
+			"splashScreens": {
+				"default": {}
+			}
+		}
+	},
+	"app-ios": {
+		"distribute": {
+			"modules": {},
+			"icons": {},
+			"splashScreens": {}
+		}
+	},
 	"mp-weixin": {
 		"appid": "",
 		"setting": {

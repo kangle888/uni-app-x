@@ -32,10 +32,10 @@
     }
   ],
   "tabBar": {
-    "color": "#000000",
-    // "selectedColor": "#000000",
-    "backgroundColor": "#FFFFFF",
-    "borderStyle": "white",
+    "color": "@tabFontColor",
+    "selectedColor": "@tabSelectedColor",
+    "backgroundColor": "@tabBgColor",
+    "borderStyle": "@tabBorderStyle",
     "list": [
       {
         "pagePath": "pages/home/index",
@@ -56,8 +56,10 @@
     ]
   },
   "globalStyle": {
-    "navigationBarBackgroundColor": "#FFFFFF",
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "RuoYi"
+    "navigationBarBackgroundColor": "@navBgColor",
+    "navigationBarTextStyle": "@navTxtStyle",
+    "navigationBarTitleText": "RuoYi",
+    "backgroundColor": "@bgColor",
+    "backgroundTextStyle": "@bgTxtStyle"
   }
 }
