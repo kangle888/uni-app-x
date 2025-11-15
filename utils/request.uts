@@ -1,6 +1,6 @@
 import config from '@/config'
 import store from '@/store'
-import { getCache } from '@/utils/cache'
+import cacheKey, { getCache } from '@/utils/cache'
 import errorCode from '@/utils/errorCode'
 import { tansParams } from '@/utils'
 import modal from '@/utils/modal'
@@ -29,7 +29,7 @@ const request = (conf: IRequest): Promise<any> => {
   // 是否需要设置 token
   const isToken: boolean = conf.headers?.isToken == false
   conf.header = conf.header ?? {}
-  const token: string = getCache('App-Token') as string
+  const token: string = getCache(cacheKey.AppToken as string) as string
   if (token.length > 0 && !isToken) {
     (conf.header as UTSJSONObject)['Authorization'] = 'Bearer ' + token
   }

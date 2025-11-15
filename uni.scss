@@ -3,8 +3,28 @@
  */
 @import '@/uni_modules/uni-scss/index.scss';
 
-/* 颜色变量 */
-// 颜色变量统一自：uni-scss/index.scss
+/* 主题相关变量 */
+// 明亮
+.light {
+  --background-color: white;
+  --color: black;
+}
+
+// 暗黑
+.dark {
+  --background-color: black;
+  --color: white;
+}
+
+.page {
+  height: 100%;
+  align-items: center;
+  background-color: var(--background-color);
+}
+
+
+/* 颜色变量（统一自：uni-scss/index.scss） */
+
 
 /* 尺寸变量 */
 // 文字尺寸（默认：16px）

@@ -1,13 +1,19 @@
 import { login as loginApi, getUserInfo as getUserInfoApi, logout as logoutApi } from '@/api/login'
-import { setCache, removeCache } from '@/utils/cache'
+import cacheKey, { setCache, removeCache } from '@/utils/cache'
 
 const state = reactive({
+  theme: 'light',
   token: '',
   name: '',
   avatar: '',
   roles: [] as Array<string>,
   permissions: [] as Array<string>
 } as UTSJSONObject)
+
+
+const changeTheme = (): void => {
+  state.theme = state.theme === 'light' ? 'dark' : 'light'
+}
 
 const setToken = (token: string): void => {
   state.token = token
@@ -39,7 +45,7 @@ const login = (userInfo: UTSJSONObject): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
     loginApi(username, password, code, uuid).then((response: any): void => {
       const res: UTSJSONObject = response as UTSJSONObject
-      setCache('App-Token', res['access_token'] as string)
+      setCache(cacheKey.AppToken as string, res['access_token'] as string)
       setToken(res['access_token'] as string)
       resolve(null)
     }).catch((error?: any) => {
@@ -72,7 +78,7 @@ const logout = (): Promise<any | null> => {
       setToken('')
       setRoles([])
       setPermissions([])
-      removeCache('App-Token')
+      removeCache(cacheKey.AppToken as string)
       resolve(null)
     }).catch((error?: any) => {
       reject(error)
@@ -82,6 +88,7 @@ const logout = (): Promise<any | null> => {
 
 export default {
   state,
+  changeTheme,
   setToken,
   setName,
   setAvatar,

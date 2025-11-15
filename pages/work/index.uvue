@@ -1,8 +1,8 @@
 <template>
-  <view class="align-center">
+  <view :class="pageClass">
     <image class="logo" src="@/static/images/logo/logo.png"></image>
     <view>
-      <text class="title">Hello RuoYi</text>
+      <text class="title text-info">Hello RuoYi</text>
     </view>
   </view>
 </template>
@@ -10,23 +10,20 @@
 <script lang="uts" setup>
   const app = getApp()
 
-  onReady((): void => {
-    console.error('onReady..')
+  const pageClass = computed<string>(() : string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string + ' page'
   })
+
 </script>
 
-<style>
+<style lang="scss">
   .logo {
     height: 80px;
     width: 80px;
-    margin-top: 110px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 27px;
+    margin: 110px auto 27px auto;
   }
 
   .title {
-    font-size: 20px;
-    color: #8f8f94;
+    font-size: $uni-font-size-large;
   }
 </style>

@@ -1,3 +1,8 @@
+export default {
+  AppToken: 'App-Token',
+  AppTheme: 'App-Theme'
+} as UTSJSONObject
+
 export function getCache(key: string): any {
   return uni.getStorageSync(key)!
 }

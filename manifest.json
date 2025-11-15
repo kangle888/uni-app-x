@@ -8,7 +8,6 @@
 		"singleThread": true
 	},
 	"app": {
-		"defaultAppTheme": "light"
 	},
 	"app-android": {
 		"distribute": {
