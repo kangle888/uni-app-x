@@ -1,6 +1,5 @@
 <!-- 主组件（所有页面都是在这里进行切换的，是应用入口文件。但它本身不是页面，这里不能编写视图元素，也就是没有<template>） -->
 <script lang="uts">
-  import cacheKey, { getCache } from '@/utils/cache'
   import store from '@/store'
 
   export default {
