@@ -1,7 +1,7 @@
 <template>
   <view :class="pageClass">
     <view class="logo-content">
-      <image class="logo-img" src="@/static/images/logo/logo.png" mode="widthFix" />
+      <image class="logo-img" src="/static/images/logo/logo.png" mode="widthFix" />
       <text class="title">若依移动端登录</text>
     </view>
     <view class="login-form-content">

@@ -63,7 +63,7 @@ const getUserInfo = (): Promise<any | null> => {
       setRoles(res['roles'] as Array<string>)
       setPermissions(res['permissions'] as Array<string>)
       setName(user['nickName'] as string)
-      setAvatar(user['avatar'] != null ? user['avatar'] as string : '@/static/images/logo/logo.png')
+      setAvatar(user['avatar'] != null ? user['avatar'] as string : '/static/images/avatar.jpg')
       resolve(null)
     }).catch((error?: any) => {
       reject(error)

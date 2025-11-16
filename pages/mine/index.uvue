@@ -1,8 +1,30 @@
 <template>
   <view :class="pageClass">
-    <image class="logo" src="@/static/images/logo/logo.png"></image>
-    <view>
-      <text class="title text-info">Hello RuoYi</text>
+    <view class="user-content">
+      <view class="flex-direction align-center">
+        <image class="avatar" :src="avatar" mode="widthFix" />
+        <text class="name">{{ name }}</text>
+      </view>
+      <uni-icons type="gear" size="40" color="#fff"></uni-icons>
+    </view>
+
+    <view class="quick-content">
+      <view class="align-center">
+        <uni-icons type="staff" size="40" color="#e03997"></uni-icons>
+        <text>交流群</text>
+      </view>
+      <view class="align-center">
+        <uni-icons type="chatbubble" size="40" color="#0081ff"></uni-icons>
+        <text>在线客服</text>
+      </view>
+      <view class="align-center">
+        <uni-icons type="chat" size="40" color="#9c26b0"></uni-icons>
+        <text>反馈社区</text>
+      </view>
+      <view class="align-center">
+        <uni-icons type="hand-up" size="40" color="#39b54a"></uni-icons>
+        <text>点赞我们</text>
+      </view>
     </view>
   </view>
 </template>
@@ -13,17 +35,43 @@
   const pageClass = computed<string>(() : string => {
     return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string + ' page'
   })
+  const avatar = computed<string>(() : string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['avatar'] as string
+  })
+  const name = computed<string>(() : string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['name'] as string
+  })
 
 </script>
 
 <style lang="scss">
-  .logo {
-    height: 80px;
-    width: 80px;
-    margin: 110px auto 27px auto;
+  .user-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 30px 40px 50px 40px;
+    background-color: $uni-primary;
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 40px;
+    }
+    .name {
+      margin-left: 20px;
+      font-size: $uni-font-size-large;
+      color: #fff;
+    }
   }
-  
-  .title {
-    font-size: $uni-font-size-large;
+
+  .quick-content {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
+    margin-top: -20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
   }
 </style>
