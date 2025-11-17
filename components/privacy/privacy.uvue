@@ -54,7 +54,7 @@
   })
 
   function close(): void {
-    // #ifdef APP
+    // #ifndef MP-WEIXIN
     uni.closeDialogPage({})
     // #endif
     // #ifdef MP-WEIXIN
@@ -74,14 +74,14 @@
 
     .dialog-content {
       width: 80%;
-      height: 60%;
+      height: 70%;
       background-color: var(--background-color);
       border-radius: 12px;
 
       .header-img {
         width: 60px;
         height: 60px;
-        margin-top: 25px;
+        margin-top: 10px;
       }
       .header-text {
         font-size: $uni-font-size-large;

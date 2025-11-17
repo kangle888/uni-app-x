@@ -28,7 +28,7 @@
       </view>
       <view class="flex-direction justify-center">
         <text class="text-info">登录即代表同意</text>
-        <text class="text-primary" @click="handlePrivacy">《用户协议及隐私协议》</text>
+        <text class="text-primary" @click="goPrivacy">《用户协议及隐私协议》</text>
       </view>
     </view>
   </view>
@@ -71,8 +71,8 @@
   /**
    * 用户协议及隐私协议
    */
-  function handlePrivacy(): void {
-    // #ifdef APP
+  function goPrivacy(): void {
+    // #ifndef MP-WEIXIN
     uni.openDialogPage({
       url: '/components/privacy/privacy'
     })

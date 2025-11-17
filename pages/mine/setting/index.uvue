@@ -43,7 +43,16 @@
   })
 
   function goPrivacy(): void {
+    // #ifndef MP-WEIXIN
+    uni.openDialogPage({
+      url: '/components/privacy/privacy'
+    })
+    // #endif
+
+    // 微信小程序不支持 openDialogPage，采用打开新页面的方式
+    // #ifdef MP-WEIXIN
     (app.vm!.$tab['navigateTo'] as (url: string) => void)('/components/privacy/privacy')
+    // #endif
   }
 
   function handleLogout(): void {
