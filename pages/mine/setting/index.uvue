@@ -1,0 +1,81 @@
+<template>
+  <view :class="theme + ' page'">
+    <view class="menu-content">
+      <list-view direction="none" :show-scrollbar="false">
+        <!-- #ifdef APP -->
+        <list-item v-if="isSupportFinger" class="menu-item menu-item-border">
+          <view class="flex-direction align-center">
+            <uni-icons type="auth-filled" :size="25"></uni-icons>
+            <text>指纹登录</text>
+          </view>
+          <switch style="transform:scale(0.7)" :checked="false" disabled />
+        </list-item>
+        <!-- #endif -->
+        <list-item class="menu-item menu-item-border">
+          <view class="flex-direction align-center">
+            <uni-icons type="color-filled" :size="25"></uni-icons>
+            <text>应用主题</text>
+          </view>
+          <uni-icons type="forward"></uni-icons>
+        </list-item>
+        <list-item class="menu-item" @click="goPrivacy">
+          <view class="flex-direction align-center">
+            <uni-icons type="locked-filled" :size="25"></uni-icons>
+            <text>用户协议及隐私协议</text>
+          </view>
+          <uni-icons type="forward"></uni-icons>
+        </list-item>
+      </list-view>
+    </view>
+    <view class="logout-btn">
+      <button type="warn" @click="handleLogout">退出登录</button>
+    </view>
+  </view>
+</template>
+
+<script lang="uts" setup>
+  const app = getApp()
+
+  const isSupportFinger = ref(false)
+
+  const theme = computed<string>((): string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+  })
+
+  function goPrivacy(): void {
+    (app.vm!.$tab['navigateTo'] as (url: string) => void)('/components/privacy/privacy')
+  }
+
+  function handleLogout(): void {
+    (app.vm!.$modal['confirm'] as (content: string) => Promise<boolean>)('确认退出登录？').then(res => {
+      (app.vm!.$store['logout'] as () => Promise<any | null>)().then((): void => {
+        (app.vm!.$tab['reLaunch'] as (url: string) => void)('/pages/login/index')
+      }).catch(() => {})
+    }).catch(() => {})
+  }
+</script>
+
+<style lang="scss">
+  .menu-content {
+    width: 90%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    
+    .menu-item {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .menu-item-border {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .logout-btn {
+    width: 90%;
+    margin-top: 30px;
+  }
+</style>

@@ -7,7 +7,7 @@ import request, { IRequest, IHeaders } from '@/utils/request'
  * @param {string} code
  * @param {string} uuid
  */
-export function login(username: string, password: string, code: string, uuid: string): Promise<any> {
+export function login(username: string, password: string, code: string, uuid: string): Promise<any | null> {
   const data = {
     username,
     password,
@@ -27,7 +27,7 @@ export function login(username: string, password: string, code: string, uuid: st
 /**
  * 获取用户详细信息
  */
-export function getUserInfo(): Promise<any> {
+export function getUserInfo(): Promise<any | null> {
   return request({
     url: '/getUserInfo',
     method: 'GET'
@@ -37,7 +37,7 @@ export function getUserInfo(): Promise<any> {
 /**
  * 退出方法
  */
-export function logout(): Promise<any> {
+export function logout(): Promise<any | null> {
   return request({
     url: '/logout',
     method: 'DELETE'
@@ -47,7 +47,7 @@ export function logout(): Promise<any> {
 /**
  * 获取验证码
  */
-export function getCaptcha(): Promise<any> {
+export function getCaptcha(): Promise<any | null> {
   return request({
     url: '/captcha',
     headers: {

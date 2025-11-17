@@ -25,6 +25,12 @@
       }
     },
     {
+      "path": "pages/mine/setting/index",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
+    },
+    {
       "path": "components/privacy/privacy",
       "style": {
         "navigationBarTitleText": "用户协议及隐私协议"

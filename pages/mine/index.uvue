@@ -1,30 +1,42 @@
 <template>
-  <view :class="pageClass">
+  <view :class="theme + ' page'">
     <view class="user-content">
       <view class="flex-direction align-center">
         <image class="avatar" :src="avatar" mode="widthFix" />
         <text class="name">{{ name }}</text>
       </view>
-      <uni-icons type="gear" size="40" color="#fff"></uni-icons>
+      <uni-icons type="gear" :size="40" color="#fff" @click="goSetting"></uni-icons>
     </view>
 
     <view class="quick-content">
       <view class="align-center">
-        <uni-icons type="staff" size="40" color="#e03997"></uni-icons>
+        <uni-icons type="staff" :size="40" color="#e03997"></uni-icons>
         <text>交流群</text>
       </view>
       <view class="align-center">
-        <uni-icons type="chatbubble" size="40" color="#0081ff"></uni-icons>
+        <uni-icons type="chatbubble" :size="40" color="#0081ff"></uni-icons>
         <text>在线客服</text>
       </view>
       <view class="align-center">
-        <uni-icons type="chat" size="40" color="#9c26b0"></uni-icons>
+        <uni-icons type="chat" :size="40" color="#9c26b0"></uni-icons>
         <text>反馈社区</text>
       </view>
       <view class="align-center">
-        <uni-icons type="hand-up" size="40" color="#39b54a"></uni-icons>
+        <uni-icons type="hand-up" :size="40" color="#39b54a"></uni-icons>
         <text>点赞我们</text>
       </view>
+    </view>
+
+    <view class="menu-content">
+      <list-view direction="none" :show-scrollbar="false">
+        <list-item :class="index == 0 ? 'menu-item' : 'menu-item' + ' menu-item-border'" v-for="(item, index) in menuList" :key="index">
+          <view class="flex-direction align-center">
+            <uni-icons :type="item.icon" :size="25"></uni-icons>
+            <text>{{ item.name }}</text>
+          </view>
+          <uni-icons type="forward"></uni-icons>
+        </list-item>
+      </list-view>
     </view>
   </view>
 </template>
@@ -32,16 +44,37 @@
 <script lang="uts" setup>
   const app = getApp()
 
-  const pageClass = computed<string>(() : string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string + ' page'
+  const menuList = ref([
+    {
+      name: '编辑资料',
+      icon: 'contact',
+      path: ''
+    },
+    {
+      name: '常见问题',
+      icon: 'help',
+      path: ''
+    },
+    {
+      name: '关于我们',
+      icon: 'info',
+      path: ''
+    }
+  ] as Array<UTSJSONObject>)
+
+  const theme = computed<string>((): string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
-  const avatar = computed<string>(() : string => {
+  const avatar = computed<string>((): string => {
     return (app.vm!.$store['state'] as UTSJSONObject)['avatar'] as string
   })
-  const name = computed<string>(() : string => {
+  const name = computed<string>((): string => {
     return (app.vm!.$store['state'] as UTSJSONObject)['name'] as string
   })
 
+  function goSetting(): void {
+    (app.vm!.$tab['navigateTo'] as (url: string) => void)('/pages/mine/setting/index')
+  }
 </script>
 
 <style lang="scss">
@@ -50,7 +83,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 30px 40px 50px 40px;
+    padding: 30px 5% 50px 5%;
     background-color: $uni-primary;
 
     .avatar {
@@ -73,5 +106,23 @@
     padding: 10px;
     background-color: #f8f8f8;
     border-radius: 10px;
+  }
+
+  .menu-content {
+    width: 90%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+
+    .menu-item {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .menu-item-border {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
   }
 </style>

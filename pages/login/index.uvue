@@ -1,22 +1,22 @@
 <template>
-  <view :class="pageClass">
+  <view :class="theme + ' page'">
     <view class="logo-content">
       <image class="logo-img" src="/static/images/logo/logo.png" mode="widthFix" />
       <text class="title">若依移动端登录</text>
     </view>
     <view class="login-form-content">
       <view class="input-item">
-        <uni-icons type="person" size="22"></uni-icons>
+        <uni-icons type="person" :size="22"></uni-icons>
         <input class="input" v-model="loginForm.username" type="text" placeholder="请输入账号" />
       </view>
       <view class="input-item">
-        <uni-icons type="locked" size="22"></uni-icons>
+        <uni-icons type="locked" :size="22"></uni-icons>
         <input class="input" v-model="loginForm.password" type="safe-password" :password="hidePwd" placeholder="请输入密码" />
-        <uni-icons :type="hidePwd ? 'eye-filled' : 'eye-slash-filled'" size="23" color="#0081ff" @click="hidePwd = !hidePwd"></uni-icons>
+        <uni-icons :type="hidePwd ? 'eye-filled' : 'eye-slash-filled'" :size="23" color="#0081ff" @click="hidePwd = !hidePwd"></uni-icons>
       </view>
       <view class="flex-direction align-center" v-if="captchaEnabled">
         <view class="input-item" style="width: 58%;">
-          <uni-icons type="image" size="22"></uni-icons>
+          <uni-icons type="image" :size="22"></uni-icons>
           <input class="input" v-model="loginForm.code" type="text" placeholder="请输入验证码" />
         </view>
         <view class="login-code">
@@ -50,15 +50,15 @@
     uuid: ''
   } as UTSJSONObject)
 
-  const pageClass = computed<string>(() : string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string + ' page'
+  const theme = computed<string>((): string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
 
   /**
    * 获取验证码
    */
   function getCode(): void {
-    getCaptcha().then((response: any): void => {
+    getCaptcha().then((response: any| null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
       captchaEnabled.value = res['captchaEnabled'] != null ? res['captchaEnabled'] as boolean : true
       if (captchaEnabled.value) {
@@ -99,6 +99,7 @@
    */
   function handlePwdLogin(): void {
     (app.vm!.$store['login'] as (userInfo: UTSJSONObject) => Promise<any | null>)(loginForm).then((): void => {
+      (app.vm!.$modal['msgSuccess'] as (title: string, duration: number | null) => void)('登录成功', null)
       loginSuccess()
     }).catch(() => {
       if (captchaEnabled.value) {

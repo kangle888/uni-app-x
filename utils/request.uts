@@ -25,7 +25,7 @@ type IResponse = {
   data?: any
 }
 
-const request = (conf: IRequest): Promise<any> => {
+const request = (conf: IRequest): Promise<any | null> => {
   // 是否需要设置 token
   const isToken: boolean = conf.headers?.isToken == false
   conf.header = conf.header ?? {}
@@ -40,7 +40,7 @@ const request = (conf: IRequest): Promise<any> => {
     conf.url = url
   }
 
-  return new Promise<any>((resolve: (value: any) => void, reject: (error?: any) => void) => {
+  return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
     const msgError = modal['msgError'] as (title: string, duration: number | null) => void
 
     uni.request<IResponse>({
@@ -75,7 +75,7 @@ const request = (conf: IRequest): Promise<any> => {
             msgError(msg, 2500)
             reject(msg)
           } else {
-            resolve(res.data!.data as any)
+            resolve(res.data!.data)
           }
         } else {
           reject('网络异常')

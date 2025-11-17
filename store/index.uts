@@ -43,7 +43,7 @@ const login = (userInfo: UTSJSONObject): Promise<any | null> => {
   const code: string = userInfo['code'] as string
   const uuid: string = userInfo['uuid'] as string
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
-    loginApi(username, password, code, uuid).then((response: any): void => {
+    loginApi(username, password, code, uuid).then((response: any | null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
       setCache(cacheKey.AppToken as string, res['access_token'] as string)
       setToken(res['access_token'] as string)
@@ -57,7 +57,7 @@ const login = (userInfo: UTSJSONObject): Promise<any | null> => {
 // 获取登录用户信息
 const getUserInfo = (): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
-    getUserInfoApi().then((response: any): void => {
+    getUserInfoApi().then((response: any | null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
       const user: UTSJSONObject = res['user'] as UTSJSONObject
       setRoles(res['roles'] as Array<string>)

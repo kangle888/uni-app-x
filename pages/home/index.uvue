@@ -1,5 +1,5 @@
 <template>
-  <view :class="pageClass">
+  <view :class="theme + ' page'">
     <image class="logo" src="/static/images/logo/logo.png"></image>
     <view>
       <text class="title text-info">Hello RuoYi</text>
@@ -10,8 +10,8 @@
 <script lang="uts" setup>
   const app = getApp()
 
-  const pageClass = computed<string>(() : string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string + ' page'
+  const theme = computed<string>((): string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
 
   onReady((): void => {
