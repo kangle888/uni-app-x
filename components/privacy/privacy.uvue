@@ -1,11 +1,11 @@
 <template>
   <view class="dialog-container">
-    <view class="dialog-content">
-      <view style="width: 100%;justify-content: center;align-items: center;background-color: #fff;">
-        <image src="/static/images/logo/logo.png" style="margin-top: 25px;width: 60px;height: 60px;"></image>
+    <view :class="theme + ' dialog-content'">
+      <view class="align-center">
+        <image class="header-img" src="/static/images/logo/logo.png"></image>
+        <text class="header-text">用户协议及隐私协议</text>
       </view>
-      <text style="text-align: center;padding-top: 20px;font-size: 20px;color: black;background-color: #fff;">用户协议及隐私协议</text>
-      <scroll-view style="flex: 1;align-content: center;padding: 10px 25px;background-color: #fff;" show-scrollbar="false">
+      <scroll-view class="scroll-content" show-scrollbar="false">
         <text class="title">服务条款确认与接纳</text>
         <text class="privacy-text" decode="true">&emsp;RuoYi 拥有ruoyi.vip其涉及到的产品、相关软件的所有权和运作权，RuoYi 享有对其产品的上一切活动的监督、提示、检查、纠正及处罚等权利。用户通过注册程序阅读本服务条款并点击"注册"按钮完成注册，即表示用户与 RuoYi 已达成协议，自愿接受本服务条款的所有内容。如果用户不同意服务条款的条件，则不能获得使用 RuoYi 服务以及注册成为 RuoYi 用户的权利。</text>
         <text class="title">使用规则</text>
@@ -49,6 +49,10 @@
 <script lang="uts" setup>
   const app = getApp()
 
+  const theme = computed<string>((): string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+  })
+
   function close(): void {
     // #ifdef APP
     uni.closeDialogPage({})
@@ -59,38 +63,49 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .dialog-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .dialog-content {
-    height: 60%;
-    width: 80%;
-    /* background-color: #fff; */
-    border-radius: 12px;
-  }
+    .dialog-content {
+      width: 80%;
+      height: 60%;
+      background-color: var(--background-color);
+      border-radius: 12px;
 
-  .button {
-    border-radius: 0px;
-    border: 0px none;
-    font-size: 15px;
-    color: lightgrey;
-    text-align: center;
-    line-height: 40px;
-  }
+      .header-img {
+        width: 60px;
+        height: 60px;
+        margin-top: 25px;
+      }
+      .header-text {
+        font-size: $uni-font-size-large;
+      }
 
-  .title {
-    margin-top: 8px;
-    margin-bottom: 4px;
-  }
+      .scroll-content {
+        flex: 1;
+        padding: 10px 25px;
 
-  .privacy-text {
-    color: grey;
+        .title {
+          margin-top: 8px;
+          margin-bottom: 4px;
+          color: var(--color);
+        }
+        .privacy-text {
+          color: grey;
+        }
+      }
+
+      .button {
+        font-size: 15px;
+        color: #fff;
+        background-color: gray;
+      }
+    }
   }
 </style>
