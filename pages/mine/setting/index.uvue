@@ -11,12 +11,15 @@
           <switch style="transform:scale(0.7)" :checked="false" disabled />
         </list-item>
         <!-- #endif -->
-        <list-item class="menu-item menu-item-border">
+        <list-item class="menu-item menu-item-border" @click="handleTheme">
           <view class="flex-direction align-center">
             <uni-icons type="color-filled" :size="25"></uni-icons>
             <text>应用主题</text>
           </view>
-          <uni-icons type="forward"></uni-icons>
+          <view class="flex-direction align-center">
+            <text>{{ appTheme }}</text>
+            <uni-icons type="forward"></uni-icons>
+          </view>
         </list-item>
         <list-item class="menu-item" @click="goPrivacy">
           <view class="flex-direction align-center">
@@ -37,20 +40,39 @@
   const app = getApp()
 
   const isSupportFinger = ref(false)
+  const textThemes = ref(['跟随系统', '明亮', '暗黑'] as Array<string>)
+  const valueThemes = ref(['auto', 'light', 'dark'] as Array<string>)
 
   const theme = computed<string>((): string => {
     return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
 
+  const appTheme = computed<string>((): string => {
+    const textTheme = (app.vm!.$store['state'] as UTSJSONObject)['appTheme'] as string
+    const index: number = valueThemes.value.indexOf(textTheme)
+    return textThemes.value[index]
+  })
+
+  function handleTheme(): void {
+    uni.showActionSheet({
+    	itemList: textThemes.value,
+    	success: (res: ShowActionSheetSuccess): void => {
+        uni.setAppTheme({
+          theme: valueThemes.value[res.tapIndex]
+        } as SetAppThemeOptions)
+    	}
+    } as ShowActionSheetOptions)
+  }
+
   function goPrivacy(): void {
-    // #ifndef MP-WEIXIN
+    // #ifndef MP
     uni.openDialogPage({
       url: '/components/privacy/privacy'
     })
     // #endif
 
     // 微信小程序不支持 openDialogPage，采用打开新页面的方式
-    // #ifdef MP-WEIXIN
+    // #ifdef MP
     (app.vm!.$tab['navigateTo'] as (url: string) => void)('/components/privacy/privacy')
     // #endif
   }

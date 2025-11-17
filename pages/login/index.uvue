@@ -72,14 +72,14 @@
    * 用户协议及隐私协议
    */
   function goPrivacy(): void {
-    // #ifndef MP-WEIXIN
+    // #ifndef MP
     uni.openDialogPage({
       url: '/components/privacy/privacy'
     })
     // #endif
 
     // 微信小程序不支持 openDialogPage，采用打开新页面的方式
-    // #ifdef MP-WEIXIN
+    // #ifdef MP
     (app.vm!.$tab['navigateTo'] as (url: string) => void)('/components/privacy/privacy')
     // #endif
   }

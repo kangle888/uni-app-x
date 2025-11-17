@@ -2,11 +2,18 @@ import { login as loginApi, getUserInfo as getUserInfoApi, logout as logoutApi }
 import cacheKey, { setCache, removeCache } from '@/utils/cache'
 
 const state = reactive({
+  // APP设置的主题（'auto', 'light', 'dark'）
+  appTheme: 'light',
+  // 当前生效的主题（'light', 'dark'）
   theme: 'light',
   token: '',
+  // 用户昵称
   name: '',
+  // 用户头像
   avatar: '',
+  // 用户角色
   roles: [] as Array<string>,
+  // 用户权限
   permissions: [] as Array<string>
 } as UTSJSONObject)
 

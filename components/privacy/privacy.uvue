@@ -54,10 +54,10 @@
   })
 
   function close(): void {
-    // #ifndef MP-WEIXIN
+    // #ifndef MP
     uni.closeDialogPage({})
     // #endif
-    // #ifdef MP-WEIXIN
+    // #ifdef MP
     (app.vm!.$tab['navigateBack'] as () => void)()
     // #endif
   }
