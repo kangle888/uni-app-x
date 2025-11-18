@@ -2,25 +2,14 @@ import { login as loginApi, getUserInfo as getUserInfoApi, logout as logoutApi }
 import cacheKey, { setCache, removeCache } from '@/utils/cache'
 
 const state = reactive({
-  // APP设置的主题（'auto', 'light', 'dark'）
-  appTheme: 'light',
-  // 当前生效的主题（'light', 'dark'）
-  theme: 'light',
+  theme: 'light' as 'light' | 'dark',
   token: '',
-  // 用户昵称
   name: '',
-  // 用户头像
   avatar: '',
-  // 用户角色
   roles: [] as Array<string>,
-  // 用户权限
   permissions: [] as Array<string>
 } as UTSJSONObject)
 
-
-const changeTheme = (): void => {
-  state.theme = state.theme === 'light' ? 'dark' : 'light'
-}
 
 const setToken = (token: string): void => {
   state.token = token
@@ -43,7 +32,44 @@ const setPermissions = (permissions: Array<string>): void => {
 }
 
 
-// 登录
+/**
+ * 切换主题
+ * @param {'auto' | 'light' | 'dark' | null} theme 设置的主题
+ */
+const changeTheme = (theme: 'auto' | 'light' | 'dark' | null): void => {
+  // #ifdef APP
+  // 获取 APP主题（取值为：auto、light、dark）
+  const appBaseInfo: GetAppBaseInfoResult = uni.getAppBaseInfo({
+    filter: ['appTheme'] as Array<string>
+  } as GetAppBaseInfoOptions)
+  const appTheme: string = appBaseInfo['appTheme'] == null ? 'light' : appBaseInfo['appTheme'] as string
+  // 如果没有切换不同的 APP主题
+  if(theme == appTheme) {
+    return
+  } else if(theme != null) {
+    // 如果切换了 APP主题
+    uni.setAppTheme({
+      theme: theme
+    } as SetAppThemeOptions)
+  }
+
+  if(appTheme == 'auto' || theme == 'auto') {
+    // 如果设置的是跟随系统，则查询系统主题（取值为：light、dark）
+    const deviceInfo: GetDeviceInfoResult = uni.getDeviceInfo({
+      filter: ['osTheme'] as Array<string>
+    } as GetDeviceInfoOptions)
+    const osTheme = deviceInfo['osTheme'] == null ? 'light' : deviceInfo['osTheme'] as string
+    state['theme'] = theme != null && theme != 'auto' ? theme : osTheme
+  } else {
+    state['theme'] = theme != null ? theme : appTheme
+  }
+  // #endif
+}
+
+/**
+ * 登录
+ * @param {UTSJSONObject} userInfo
+ */
 const login = (userInfo: UTSJSONObject): Promise<any | null> => {
   const username: string = userInfo['username'] as string
   const password: string = userInfo['password'] as string
@@ -61,7 +87,9 @@ const login = (userInfo: UTSJSONObject): Promise<any | null> => {
   })
 }
 
-// 获取登录用户信息
+/**
+ * 获取登录用户信息
+ */
 const getUserInfo = (): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
     getUserInfoApi().then((response: any | null): void => {
@@ -78,7 +106,9 @@ const getUserInfo = (): Promise<any | null> => {
   })
 }
 
-// 退出系统
+/**
+ * 退出系统
+ */
 const logout = (): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
     logoutApi().then((): void => {
@@ -95,12 +125,12 @@ const logout = (): Promise<any | null> => {
 
 export default {
   state,
-  changeTheme,
   setToken,
   setName,
   setAvatar,
   setRoles,
   setPermissions,
+  changeTheme,
   login,
   getUserInfo,
   logout

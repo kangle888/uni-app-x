@@ -3,13 +3,21 @@
   import store from '@/store'
 
   export default {
+    globalData: {  
+      callbackId: 0
+    },
+    data() {
+      return {
+        abc: '123'
+      }
+    },
     /**
      * 监听应用初始化（应用初始化完成时触发，全局只触发一次）
      * @param {OnLaunchOptions} options
      */
     onLaunch(options: OnLaunchOptions): void {
       console.log('App Launch')
-      this.setAppTheme()
+      this.setAndOnAppTheme()
     },
     /**
      * 监听应用显示（应用启动，或从后台进入前台显示时触发）
@@ -25,6 +33,13 @@
       console.log('App Hide')
     },
     /**
+     * 监听应用退出（仅支持 Android 和 HarmonyOS）
+     */
+    onExit() {
+      console.log('App Exit')
+      this.offAppTheme()
+    },
+    /**
      * 监听应用错误（应用发生脚本错误或API调用报错时触发）
      * @param {any} error
      */
@@ -33,31 +48,23 @@
     },
     methods: {
       /**
-       * 设置应用主题
+       * 设置应用主题并开启监听系统主题变化
        */
-      setAppTheme(): void {
+      setAndOnAppTheme(): void {
         // #ifdef APP
-        // 先获取APP设置的主题
-        const appBaseInfo: GetAppBaseInfoResult = uni.getAppBaseInfo({
-          filter: ['appTheme'] as Array<string>
-        } as GetAppBaseInfoOptions)
-        if(appBaseInfo['appTheme'] != null) {
-          const appTheme: string = appBaseInfo['appTheme'] as string
-          if(appTheme === 'auto') {
-            // 如果设置的是跟随系统，则查询系统主题
-            const deviceInfo: GetDeviceInfoResult = uni.getDeviceInfo({
-              filter: ['osTheme'] as Array<string>
-            } as GetDeviceInfoOptions)
-            const osTheme: any | null = deviceInfo['osTheme']
-            if(osTheme != null && (store['state'] as UTSJSONObject)['theme'] as string != osTheme) {
-              (store['changeTheme'] as () => void)()
-            }
-          } else {
-            if((store['state'] as UTSJSONObject)['theme'] as string != appTheme) {
-              (store['changeTheme'] as () => void)()
-            }
-          }
-        }
+        (store['changeTheme'] as (appTheme: 'auto' | 'light' | 'dark' | null) => void)(null)
+
+        this.globalData.callbackId = uni.onOsThemeChange((res: OsThemeChangeResult) => {
+          (store['changeTheme'] as (appTheme: 'auto' | 'light' | 'dark' | null) => void)(null)
+        })
+        // #endif
+      },
+      /**
+       * 取消监听系统主题变化
+       */
+      offAppTheme(): void {
+        // #ifdef APP
+        uni.offOsThemeChange(this.globalData.callbackId)
         // #endif
       }
     }

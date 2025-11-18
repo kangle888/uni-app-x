@@ -52,7 +52,7 @@ const request = (conf: IRequest): Promise<any | null> => {
       success: (res: RequestSuccess<IResponse>): void => {
         if (res.data != null) {
           const code: number = res.data!.code | 200
-          const msg: string = errorCode[code] != null ? errorCode[code] as string : (res.data!.description === '' ? errorCode['default'] as string : res.data!.description)
+          const msg: string = errorCode[code] != null ? errorCode[code] as string : (res.data!.description == '' ? errorCode['default'] as string : res.data!.description)
           if (code == 401) {
             uni.showModal({
               title: '提示',
