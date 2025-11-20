@@ -29,7 +29,7 @@
 
     <view class="menu-content">
       <list-view direction="none" :show-scrollbar="false">
-        <list-item :class="index == 0 ? 'menu-item' : 'menu-item' + ' menu-item-border'" v-for="(item, index) in menuList" :key="index">
+        <list-item :class="index == 0 ? 'menu-item' : 'menu-item menu-item-border'" v-for="(item, index) in menuList" :key="index">
           <view class="flex-direction align-center">
             <uni-icons :type="item.icon" :size="25"></uni-icons>
             <text>{{ item.name }}</text>

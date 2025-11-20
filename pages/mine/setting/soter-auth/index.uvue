@@ -1,0 +1,68 @@
+<template>
+  <view :class="theme + ' page'">
+    <view class="menu-content">
+      <!-- #ifdef APP -->
+      <list-view direction="none" :show-scrollbar="false">
+        <list-item :class="index == 0 ? 'menu-item' : 'menu-item menu-item-border'" v-for="(item, index) in soterAuthList" :key="index">
+          <view class="flex-direction align-center">
+            <uni-icons type="auth-filled" :size="25"></uni-icons>
+            <text>{{ item.name }}识别</text>
+          </view>
+          <text v-if="item.enabled == null">请先录入{{ item.name }}</text>
+          <switch v-else style="transform:scale(0.7)" :checked="item.enabled" @change="switchChange($event, item)" />
+        </list-item>
+      </list-view>
+      <!-- #endif -->
+    </view>
+  </view>
+</template>
+
+<script lang="uts" setup>
+  import cacheKey, { getCache, setCache } from '@/utils/cache'
+
+  const app = getApp()
+
+  const soterAuthList = ref([] as Array<UTSJSONObject>)
+
+  const theme = computed<string>((): string => {
+    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+  })
+
+  /**
+   * 获取生物认证
+   */
+  function getSoterAuth(): void {
+    // #ifdef APP
+    soterAuthList.value = getCache(cacheKey.AppSoterAuth as string) == '' ? [] : getCache(cacheKey.AppSoterAuth as string) as Array<UTSJSONObject>
+    // #endif
+  }
+
+  function switchChange(e : UniSwitchChangeEvent, soterAuth: UTSJSONObject): void {
+    soterAuth['enabled'] = e.detail.value
+    if(getCache(cacheKey.AppSoterAuth as string) != '') {
+      setCache(cacheKey.AppSoterAuth as string, soterAuthList.value)
+    }
+  }
+
+  getSoterAuth()
+</script>
+
+<style lang="scss">
+  .menu-content {
+    width: 90%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+
+    .menu-item {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .menu-item-border {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+</style>

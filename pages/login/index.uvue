@@ -4,6 +4,7 @@
       <image class="logo-img" src="/static/images/logo/logo.png" mode="widthFix" />
       <text class="title">若依移动端登录</text>
     </view>
+
     <view class="login-form-content">
       <view class="input-item">
         <uni-icons type="person" :size="22"></uni-icons>
@@ -31,10 +32,23 @@
         <text class="text-primary" @click="goPrivacy">《用户协议及隐私协议》</text>
       </view>
     </view>
+
+    <view v-if="soterAuthList.length > 0" class="login-more-content">
+      <text>更多登录方式</text>
+      <view class="soter-auth">
+        <!-- #ifdef APP -->
+        <view v-for="(item, index) in soterAuthList" :key="index">
+          <uni-icons type="auth-filled" :size="30"></uni-icons>
+          <text>{{ item.name }}</text>
+        </view>
+        <!-- #endif -->
+      </view>
+    </view>
   </view>
 </template>
 
 <script lang="uts" setup>
+  import cacheKey, { getCache } from '@/utils/cache'
   import { getCaptcha } from '@/api/login'
 
   const app = getApp()
@@ -42,6 +56,7 @@
   const codeUrl = ref('')
   const hidePwd = ref(true)
   const captchaEnabled = ref(true)
+  const soterAuthList = ref([] as Array<UTSJSONObject>)
 
   const loginForm = reactive({
     username: 'admin',
@@ -53,6 +68,17 @@
   const theme = computed<string>((): string => {
     return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
+
+  /**
+   * 获取生物认证
+   */
+  function getSoterAuth(): void {
+    // #ifdef APP
+    let tempList: Array<UTSJSONObject> = getCache(cacheKey.AppSoterAuth as string) == '' ? [] : getCache(cacheKey.AppSoterAuth as string) as Array<UTSJSONObject>
+    // 只显示录入了生物信息的验证方式
+    soterAuthList.value = tempList.filter(item => item['enabled'] != null)
+    // #endif
+  }
 
   /**
    * 获取验证码
@@ -108,6 +134,7 @@
     })
   }
 
+  getSoterAuth()
   getCode()
 </script>
 
@@ -129,9 +156,9 @@
   }
 
   .login-form-content {
+    width: 80%;
     margin: 20px auto;
     margin-top: 20%;
-    width: 80%;
 
     .input-item {
       flex-direction: row;
@@ -163,6 +190,19 @@
     .login-btn {
       margin-top: 50px;
       margin-bottom: 20px;
+    }
+  }
+
+  .login-more-content {
+    align-items: center;
+    width: 60%;
+    margin-top: 10px;
+
+    .soter-auth {
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 5px;
     }
   }
 </style>

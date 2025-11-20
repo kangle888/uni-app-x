@@ -3,12 +3,13 @@
     <view class="menu-content">
       <list-view direction="none" :show-scrollbar="false">
         <!-- #ifdef APP -->
-        <list-item v-if="isSupportFinger" class="menu-item menu-item-border">
+        <list-item class="menu-item menu-item-border" @click="goSoterAuth">
           <view class="flex-direction align-center">
             <uni-icons type="auth-filled" :size="25"></uni-icons>
-            <text>指纹登录</text>
+            <text>生物认证登录</text>
           </view>
-          <switch style="transform:scale(0.7)" :checked="false" disabled />
+          <uni-icons v-if="isSupportSoterAuth" type="forward"></uni-icons>
+          <text v-else>不支持</text>
         </list-item>
         <list-item class="menu-item menu-item-border" @click="handleTheme">
           <view class="flex-direction align-center">
@@ -37,9 +38,11 @@
 </template>
 
 <script lang="uts" setup>
+  import cacheKey, { getCache } from '@/utils/cache'
+
   const app = getApp()
 
-  const isSupportFinger = ref(false)
+  const isSupportSoterAuth = ref(false)
   const textTheme = ref('')
   const textThemes = ref(['跟随系统', '明亮', '暗黑'] as Array<string>)
   const valueThemes = ref(['auto', 'light', 'dark'] as Array<string>)
@@ -47,6 +50,18 @@
   const theme = computed<string>((): string => {
     return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
+
+  /**
+   * 获取生物认证
+   */
+  function getSoterAuth(): void {
+    // #ifdef APP
+    const soterAuth: string | Array<UTSJSONObject> = getCache(cacheKey.AppSoterAuth as string)
+    if(soterAuth != '' && (soterAuth as Array<UTSJSONObject>).length > 0) {
+      isSupportSoterAuth.value = true
+    }
+    // #endif
+  }
 
   /**
    * 获取 APP主题
@@ -59,6 +74,15 @@
     const appTheme: string = appBaseInfo['appTheme'] == null ? 'light' : appBaseInfo['appTheme'] as string
     const index: number = valueThemes.value.indexOf(appTheme)
     textTheme.value = textThemes.value[index]
+    // #endif
+  }
+
+  function goSoterAuth(): void {
+    // #ifdef APP
+    if(!isSupportSoterAuth.value) {
+      return
+    }
+    (app.vm!.$tab['navigateTo'] as (url: string) => void)('/pages/mine/setting/soter-auth/index')
     // #endif
   }
 
@@ -93,6 +117,7 @@
     }).catch(() => {})
   }
 
+  getSoterAuth()
   getAppTheme()
 </script>
 
@@ -103,7 +128,7 @@
     padding: 10px;
     background-color: #f8f8f8;
     border-radius: 10px;
-    
+
     .menu-item {
       flex-direction: row;
       align-items: center;

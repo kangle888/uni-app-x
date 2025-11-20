@@ -31,6 +31,12 @@
       }
     },
     {
+      "path": "pages/mine/setting/soter-auth/index",
+      "style": {
+        "navigationBarTitleText": "生物认证登录"
+      }
+    },
+    {
       "path": "components/privacy/privacy",
       "style": {
         "navigationBarTitleText": "用户协议及隐私协议"
