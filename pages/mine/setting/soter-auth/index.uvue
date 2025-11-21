@@ -5,11 +5,11 @@
       <list-view direction="none" :show-scrollbar="false">
         <list-item :class="index == 0 ? 'menu-item' : 'menu-item menu-item-border'" v-for="(item, index) in soterAuthList" :key="index">
           <view class="flex-direction align-center">
-            <uni-icons type="auth-filled" :size="25"></uni-icons>
+            <image class="soter-auth-img" :src="item.icon" mode="widthFix" />
             <text>{{ item.name }}识别</text>
           </view>
           <text v-if="item.enabled == null">请先录入{{ item.name }}</text>
-          <switch v-else style="transform:scale(0.7)" :checked="item.enabled" @change="switchChange($event, item)" />
+          <switch v-else style="transform:scale(0.7)" :checked="item.enabled" @change="switchChange($event as UniSwitchChangeEvent, item)" />
         </list-item>
       </list-view>
       <!-- #endif -->
@@ -63,6 +63,11 @@
     }
     .menu-item-border {
       border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .soter-auth-img {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
     }
   }
 </style>

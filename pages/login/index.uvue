@@ -34,12 +34,11 @@
     </view>
 
     <view v-if="soterAuthList.length > 0" class="login-more-content">
-      <text>更多登录方式</text>
+      <text class="title">更多登录方式</text>
       <view class="soter-auth">
         <!-- #ifdef APP -->
         <view v-for="(item, index) in soterAuthList" :key="index">
-          <uni-icons type="auth-filled" :size="30"></uni-icons>
-          <text>{{ item.name }}</text>
+          <image class="soter-auth-img" :src="item.enabled as boolean ? item.iconSelect : item.icon" mode="widthFix" />
         </view>
         <!-- #endif -->
       </view>
@@ -195,14 +194,22 @@
 
   .login-more-content {
     align-items: center;
-    width: 60%;
+    width: 50%;
     margin-top: 10px;
 
+    .title {
+      color: var(--color);
+    }
     .soter-auth {
       flex-direction: row;
       justify-content: space-around;
       width: 100%;
-      margin-top: 5px;
+      margin-top: 20px;
+
+      .soter-auth-img {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
 </style>

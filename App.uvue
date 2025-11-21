@@ -69,7 +69,7 @@
        */
       checkSoterAuth(): void {
         // 目前仅鸿蒙支持
-        // #ifdef APP
+        // #ifdef APP-HARMONY
         // 1、获取本机支持的 SOTER生物认证方式
         uni.checkIsSupportSoterAuthentication({
           success: (res1: CheckIsSupportSoterAuthenticationSuccess) => {
@@ -79,14 +79,22 @@
               // 遍历
               res1.supportMode.forEach((mode: string, index: number) => {
                 let name: string = ''
+                let iconSelect: string = ''
+                let icon: string = ''
                 if(mode == 'fingerPrint') {
                   name = '指纹'
+                  iconSelect = '/static/images/icon/fingerPrint_.png'
+                  icon = '/static/images/icon/fingerPrint.png'
                 } else if(mode == 'facial') {
                   name = '人脸'
+                  iconSelect = '/static/images/icon/facial_.png'
+                  icon = '/static/images/icon/facial.png'
                 } else if(mode == 'speech') {
                   name = '声纹'
+                  iconSelect = '/static/images/icon/speech_.png'
+                  icon = '/static/images/icon/speech.png'
                 }
-                let auth: UTSJSONObject = soterAuth.length > 0 ? soterAuth[index] : { mode: mode, name: name, enabled: null }
+                let auth: UTSJSONObject = soterAuth.length > 0 ? soterAuth[index] : { mode: mode, name: name, iconSelect: iconSelect, icon: icon, enabled: null }
                 // 2、获取设备内是否录入对应的生物信息（比如指纹、人脸）
                 uni.checkIsSoterEnrolledInDevice({
                   checkAuthMode: mode,
