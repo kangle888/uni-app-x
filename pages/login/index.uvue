@@ -12,7 +12,7 @@
       </view>
       <view class="input-item">
         <uni-icons type="locked" :size="22"></uni-icons>
-        <input class="input" v-model="loginForm.password" type="safe-password" :password="hidePwd" placeholder="请输入密码" />
+        <input class="input" v-model="loginForm.password" type="text" :password="hidePwd" placeholder="请输入密码" />
         <uni-icons :type="hidePwd ? 'eye-filled' : 'eye-slash-filled'" :size="23" color="#0081ff" @click="hidePwd = !hidePwd"></uni-icons>
       </view>
       <view class="flex-direction align-center" v-if="captchaEnabled">
