@@ -37,7 +37,7 @@
       <text class="title">更多登录方式</text>
       <view class="soter-auth">
         <!-- #ifdef APP -->
-        <view v-for="(item, index) in soterAuthList" :key="index">
+        <view v-for="(item, index) in soterAuthList" :key="index" @click="handleSoterAuth(item)">
           <image class="soter-auth-img" :src="item.enabled as boolean ? item.iconSelect : item.icon" mode="widthFix" />
         </view>
         <!-- #endif -->
@@ -94,6 +94,32 @@
   }
 
   /**
+   * 登录成功
+   */
+  function loginSuccess(): void {
+    (app.vm!.$modal['msgSuccess'] as (title: string, duration: number | null) => void)('登录成功', null)
+    setTimeout((): void => {
+      (app.vm!.$store['getUserInfo'] as () => Promise<any | null>)().then((): void => {
+        // 跳转首页
+        (app.vm!.$tab['reLaunch'] as (url: string) => void)('/pages/home/index')
+      })
+    }, 1000)
+  }
+
+  /**
+   * 账号密码登录
+   */
+  function handlePwdLogin(): void {
+    (app.vm!.$store['pwdLogin'] as (userInfo: UTSJSONObject) => Promise<any | null>)(loginForm).then((): void => {
+      loginSuccess()
+    }).catch(() => {
+      if (captchaEnabled.value) {
+        getCode()
+      }
+    })
+  }
+
+  /**
    * 用户协议及隐私协议
    */
   function goPrivacy(): void {
@@ -110,27 +136,18 @@
   }
 
   /**
-   * 登录成功
+   * 生物认证
    */
-  function loginSuccess() {
-    (app.vm!.$store['getUserInfo'] as () => Promise<any | null>)().then((): void => {
-      // 跳转首页
-      (app.vm!.$tab['reLaunch'] as (url: string) => void)('/pages/home/index')
-    })
-  }
-
-  /**
-   * 账号密码登录
-   */
-  function handlePwdLogin(): void {
-    (app.vm!.$store['login'] as (userInfo: UTSJSONObject) => Promise<any | null>)(loginForm).then((): void => {
-      (app.vm!.$modal['msgSuccess'] as (title: string, duration: number | null) => void)('登录成功', null)
+  function handleSoterAuth(soterAuth: UTSJSONObject): void {
+    // #ifdef APP
+    (app.vm!.$store['soterAuthLogin'] as (soterAuth: UTSJSONObject) => Promise<any | null>)(soterAuth).then((): void => {
       loginSuccess()
-    }).catch(() => {
-      if (captchaEnabled.value) {
-        getCode()
+    }).catch((err?: any) => {
+      if(typeof err == "string") {
+        (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)(err as string, null)
       }
     })
+    // #endif
   }
 
   getSoterAuth()

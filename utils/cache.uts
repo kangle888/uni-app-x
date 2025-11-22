@@ -1,6 +1,7 @@
 export default {
   AppToken: 'App-Token',
-  AppSoterAuth: 'App-Soter-Auth'
+  AppSoterAuth: 'App-Soter-Auth',
+  AppUserInfo: 'App-User-Info'
 } as UTSJSONObject
 
 export function getCache(key: string): any {

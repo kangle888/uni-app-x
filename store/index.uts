@@ -1,5 +1,5 @@
 import { login as loginApi, getUserInfo as getUserInfoApi, logout as logoutApi } from '@/api/login'
-import cacheKey, { setCache, removeCache } from '@/utils/cache'
+import cacheKey, { getCache, setCache, removeCache } from '@/utils/cache'
 
 const state = reactive({
   theme: 'light' as 'light' | 'dark',
@@ -67,14 +67,18 @@ const changeTheme = (theme: 'auto' | 'light' | 'dark' | null): void => {
 }
 
 /**
- * 登录
+ * 账号密码登录
  * @param {UTSJSONObject} userInfo
  */
-const login = (userInfo: UTSJSONObject): Promise<any | null> => {
+const pwdLogin = (userInfo: UTSJSONObject): Promise<any | null> => {
   const username: string = userInfo['username'] as string
   const password: string = userInfo['password'] as string
   const code: string = userInfo['code'] as string
   const uuid: string = userInfo['uuid'] as string
+  // 存储账号密码，用于生物认证登录
+  // #ifdef APP
+  setCache(cacheKey.AppUserInfo as string, { username, password } as UTSJSONObject)
+  // #endif
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
     loginApi(username, password, code, uuid).then((response: any | null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
@@ -84,6 +88,44 @@ const login = (userInfo: UTSJSONObject): Promise<any | null> => {
     }).catch((error?: any) => {
       reject(error)
     })
+  })
+}
+
+/**
+ * 生物认证登录
+ * @param {UTSJSONObject} soterAuth
+ */
+const soterAuthLogin = (soterAuth: UTSJSONObject): Promise<any | null> => {
+  return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
+    // #ifdef APP-HARMONY
+    if(!(soterAuth['enabled'] as boolean)) {
+      reject('请登录后开启' + soterAuth['name'] as string + '识别')
+      return
+    }
+    const userInfo: string | UTSJSONObject = getCache(cacheKey.AppUserInfo as string)
+    if(userInfo == '') {
+      reject('请先使用账号密码登录')
+      return
+    }
+    // 开始 SOTER生物认证
+    uni.startSoterAuthentication({
+      requestAuthModes: [soterAuth['mode'] as string],
+      authContent: `请用${soterAuth['name'] as string}解锁`,
+      success: (res: StartSoterAuthenticationSuccess) => {
+        loginApi((userInfo as UTSJSONObject)['username'] as string, (userInfo as UTSJSONObject)['password'] as string, '', '').then((response: any | null): void => {
+          const res: UTSJSONObject = response as UTSJSONObject
+          setCache(cacheKey.AppToken as string, res['access_token'] as string)
+          setToken(res['access_token'] as string)
+          resolve(null)
+        }).catch((error?: any) => {
+          reject(error)
+        })
+      },
+      fail: (err: StartSoterAuthenticationFail) => {
+        reject(`${soterAuth['name'] as string}认证失败`)
+      }
+    } as StartSoterAuthenticationOptions)
+    // #endif
   })
 }
 
@@ -131,7 +173,8 @@ export default {
   setRoles,
   setPermissions,
   changeTheme,
-  login,
+  pwdLogin,
+  soterAuthLogin,
   getUserInfo,
   logout
 } as UTSJSONObject
