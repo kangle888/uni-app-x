@@ -9,7 +9,7 @@ export default {
       title: title,
       icon: 'none',
       duration: duration ?? 1500
-    })
+    } as ShowToastOptions)
   },
   /**
    * 错误消息
@@ -21,7 +21,7 @@ export default {
       title: title,
       icon: 'error',
       duration: duration ?? 1500
-    })
+    } as ShowToastOptions)
   },
   /**
    * 成功消息
@@ -33,7 +33,7 @@ export default {
       title: title,
       icon: 'success',
       duration: duration ?? 1500
-    })
+    } as ShowToastOptions)
   },
   /**
    * 弹出提示
@@ -44,7 +44,7 @@ export default {
       title: '提示',
       content: content,
       showCancel: false
-    })
+    } as ShowModalOptions)
   },
   /**
    * 确认窗体
@@ -64,7 +64,7 @@ export default {
             reject(false)
           }
         }
-      })
+      } as ShowModalOptions)
     })
   }
 } as UTSJSONObject

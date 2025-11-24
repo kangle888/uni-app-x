@@ -110,6 +110,14 @@
    * 账号密码登录
    */
   function handlePwdLogin(): void {
+    if(loginForm.username == '' || loginForm.password == '') {
+      (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('请输入账号/密码', null)
+      return
+    }
+    if(captchaEnabled.value && loginForm.code == '') {
+      (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('请输入验证码', null)
+      return
+    }
     (app.vm!.$store['pwdLogin'] as (userInfo: UTSJSONObject) => Promise<any | null>)(loginForm).then((): void => {
       loginSuccess()
     }).catch(() => {
