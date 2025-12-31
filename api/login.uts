@@ -15,7 +15,7 @@ export function login(username: string, password: string, code: string, uuid: st
     uuid
   } as UTSJSONObject
   return request({
-    url: '/app-login',
+    url: '/auth/app-login',
     headers: {
       isToken: false
     } as IHeaders,
@@ -29,7 +29,7 @@ export function login(username: string, password: string, code: string, uuid: st
  */
 export function getUserInfo(): Promise<any | null> {
   return request({
-    url: '/getUserInfo',
+    url: '/auth/getUserInfo',
     method: 'GET'
   } as IRequest)
 }
@@ -39,7 +39,7 @@ export function getUserInfo(): Promise<any | null> {
  */
 export function logout(): Promise<any | null> {
   return request({
-    url: '/logout',
+    url: '/auth/logout',
     method: 'DELETE'
   } as IRequest)
 }
@@ -49,7 +49,7 @@ export function logout(): Promise<any | null> {
  */
 export function getCaptcha(): Promise<any | null> {
   return request({
-    url: '/captcha',
+    url: '/auth/captcha',
     headers: {
       isToken: false
     } as IHeaders,
