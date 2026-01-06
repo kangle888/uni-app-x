@@ -9,9 +9,9 @@
     </view>
 
     <view class="quick-content">
-      <view class="align-center">
-        <uni-icons type="staff" :size="40" color="#e03997"></uni-icons>
-        <text>交流群</text>
+      <view class="align-center" @click="handleScan">
+        <uni-icons type="scan" :size="40" color="#e03997"></uni-icons>
+        <text>扫一扫</text>
       </view>
       <view class="align-center">
         <uni-icons type="chatbubble" :size="40" color="#0081ff"></uni-icons>
@@ -42,6 +42,8 @@
 </template>
 
 <script lang="uts" setup>
+  import { scanLogin } from '@/api/login'
+
   const app = getApp()
 
   const menuList = ref([
@@ -72,8 +74,63 @@
     return (app.vm!.$store['state'] as UTSJSONObject)['name'] as string
   })
 
+  /**
+   * 跳转设置
+   */
   function goSetting(): void {
     (app.vm!.$tab['navigateTo'] as (url: string) => void)('/pages/mine/setting/index')
+  }
+
+  /**
+   * 扫一扫
+   */
+  function handleScan(): void {
+    uni.scanCode({
+      scanType: ['qrCode'],
+      success: (result: ScanCodeSuccess): void => {
+        const qrCode: string = result.result
+        if(qrCode != '') {
+          // 扫码后获取信息
+          scanLogin(qrCode, '0').then((response: any| null): void => {
+            const res: UTSJSONObject = response as UTSJSONObject
+            if(res.state == '1') {
+              let msg: string = '未知设备'
+              if(res.browser != null) {
+                msg = res.browser as string + '（' + res.platform as string + '）'
+              }
+              (app.vm!.$modal['confirm'] as (content: string) => Promise<boolean>)('是否确认登录以下设备：' + msg).then(res => {
+                // 确认登录
+                scanLogin(qrCode, '1').then((responseR: any| null): void => {
+                  const resR: UTSJSONObject = responseR as UTSJSONObject
+                  if(resR.state == '2') {
+                    (app.vm!.$modal['msgSuccess'] as (title: string, duration: number | null) => void)('登录成功', null)
+                  } else {
+                    (app.vm!.$modal['alert'] as (content: string) => void)('二维码已失效')
+                  }
+                })
+              }).catch(() => {
+                // 取消登录
+                scanLogin(qrCode, '2').then((responseR: any| null): void => {
+                  const resR: UTSJSONObject = responseR as UTSJSONObject
+                  if(resR.state == '-1') {
+                    (app.vm!.$modal['alert'] as (content: string) => void)('二维码已失效')
+                  } else {
+                    (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('已取消登录', null)
+                  }
+                })
+              })
+            } else {
+              (app.vm!.$modal['alert'] as (content: string) => void)('二维码已失效')
+            }
+          })
+        } else {
+          (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('扫码失败', null)
+        }
+      },
+      fail: (err: ScanCodeFail): void => {
+        (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('扫码失败', null)
+      }
+    })
   }
 </script>
 

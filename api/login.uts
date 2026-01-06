@@ -1,7 +1,21 @@
 import request, { IRequest, IHeaders } from '@/utils/request'
 
 /**
- * 登录方法
+ * 获取验证码
+ */
+export function getCaptcha(): Promise<any | null> {
+  return request({
+    url: '/auth/captcha',
+    headers: {
+      isToken: false
+    } as IHeaders,
+    method: 'GET',
+    timeout: 20000
+  } as IRequest)
+}
+
+/**
+ * 账密登录
  * @param {string} username
  * @param {string} password
  * @param {string} code
@@ -25,6 +39,19 @@ export function login(username: string, password: string, code: string, uuid: st
 }
 
 /**
+ * 扫码登录
+ * @param {string} qrCode
+ * @param {string} type
+ */
+export function scanLogin(qrCode: string, type: string): Promise<any | null> {
+  return request({
+    url: '/auth/app-scan',
+    method: 'GET',
+    params: { qrCode, type }
+  } as IRequest)
+}
+
+/**
  * 获取用户详细信息
  */
 export function getUserInfo(): Promise<any | null> {
@@ -41,19 +68,5 @@ export function logout(): Promise<any | null> {
   return request({
     url: '/auth/logout',
     method: 'DELETE'
-  } as IRequest)
-}
-
-/**
- * 获取验证码
- */
-export function getCaptcha(): Promise<any | null> {
-  return request({
-    url: '/auth/captcha',
-    headers: {
-      isToken: false
-    } as IHeaders,
-    method: 'GET',
-    timeout: 20000
   } as IRequest)
 }
