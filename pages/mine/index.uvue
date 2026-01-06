@@ -110,13 +110,8 @@
                 })
               }).catch(() => {
                 // 取消登录
-                scanLogin(qrCode, '2').then((responseR: any| null): void => {
-                  const resR: UTSJSONObject = responseR as UTSJSONObject
-                  if(resR.state == '-1') {
-                    (app.vm!.$modal['alert'] as (content: string) => void)('二维码已失效')
-                  } else {
-                    (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('已取消登录', null)
-                  }
+                scanLogin(qrCode, '2').then((): void => {
+                  (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('已取消登录', null)
                 })
               })
             } else {
