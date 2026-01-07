@@ -8,16 +8,16 @@
 <h4 align="center">基于 Uniapp X 的移动端快速开发框架</h4>
 
 <p align="center">
-    <a href="https://gitee.com/opensolon/ruoyi-solon/stargazers">
-        <img src="https://gitee.com/opensolon/ruoyi-solon/badge/star.svg?theme=dark" alt="" />
+    <a href="https://gitee.com/lcm742320521/ruoyi-app/stargazers">
+        <img src="https://gitee.com/lcm742320521/ruoyi-app/badge/star.svg?theme=dark" alt="" />
     </a>
-	<a href="https://gitee.com/opensolon/ruoyi-solon/blob/master/LICENSE">
+	<a href="https://gitee.com/lcm742320521/ruoyi-app/blob/master/LICENSE">
 	    <img src="https://img.shields.io/badge/License-Apache 2.0-green" alt="" />
 	</a>
 </p>
 
 ## 平台简介
-RuoYi App 移动解决方案，采用 uniapp-x 框架，一份代码多终端适配。
+RuoYi App 移动解决方案，采用 Uniapp X 框架，一份代码多终端适配。
 
 * 同时支持鸿蒙、Android、iOS、微信小程序。
 * 技术栈：Uniapp X、Vue、UTS、Uni UI等。
