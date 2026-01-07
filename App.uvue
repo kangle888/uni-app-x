@@ -68,7 +68,7 @@
        * 检查本机支持的 SOTER生物认证方式
        */
       checkSoterAuth(): void {
-        // 目前仅鸿蒙支持
+        // 截至 uniapp-x v4.87版本，仅鸿蒙平台支持
         // #ifdef APP-HARMONY
         // 1、获取本机支持的 SOTER生物认证方式
         uni.checkIsSupportSoterAuthentication({

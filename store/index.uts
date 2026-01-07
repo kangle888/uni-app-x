@@ -80,7 +80,7 @@ const pwdLogin = (userInfo: UTSJSONObject): Promise<any | null> => {
   setCache(cacheKey.AppUserInfo as string, { username, password } as UTSJSONObject)
   // #endif
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
-    loginApi(username, password, code, uuid).then((response: any | null): void => {
+    loginApi(username, password, code, uuid, false).then((response: any | null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
       setCache(cacheKey.AppToken as string, res['access_token'] as string)
       setToken(res['access_token'] as string)
@@ -97,7 +97,7 @@ const pwdLogin = (userInfo: UTSJSONObject): Promise<any | null> => {
  */
 const soterAuthLogin = (soterAuth: UTSJSONObject): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
-    // #ifdef APP-HARMONY
+    // #ifdef APP
     if(!(soterAuth['enabled'] as boolean)) {
       reject('请登录后开启' + soterAuth['name'] as string + '识别')
       return
@@ -112,7 +112,7 @@ const soterAuthLogin = (soterAuth: UTSJSONObject): Promise<any | null> => {
       requestAuthModes: [soterAuth['mode'] as string],
       authContent: `请用${soterAuth['name'] as string}解锁`,
       success: (res: StartSoterAuthenticationSuccess) => {
-        loginApi((userInfo as UTSJSONObject)['username'] as string, (userInfo as UTSJSONObject)['password'] as string, '', '').then((response: any | null): void => {
+        loginApi((userInfo as UTSJSONObject)['username'] as string, (userInfo as UTSJSONObject)['password'] as string, '', '', true).then((response: any | null): void => {
           const res: UTSJSONObject = response as UTSJSONObject
           setCache(cacheKey.AppToken as string, res['access_token'] as string)
           setToken(res['access_token'] as string)

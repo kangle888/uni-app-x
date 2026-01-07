@@ -20,13 +20,15 @@ export function getCaptcha(): Promise<any | null> {
  * @param {string} password
  * @param {string} code
  * @param {string} uuid
+ * @param {string} isSoterAuth
  */
-export function login(username: string, password: string, code: string, uuid: string): Promise<any | null> {
+export function login(username: string, password: string, code: string, uuid: string, isSoterAuth: boolean): Promise<any | null> {
   const data = {
     username,
     password,
     code,
-    uuid
+    uuid,
+    isSoterAuth
   } as UTSJSONObject
   return request({
     url: '/auth/app-login',
