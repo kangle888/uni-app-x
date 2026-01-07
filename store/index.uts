@@ -97,7 +97,7 @@ const pwdLogin = (userInfo: UTSJSONObject): Promise<any | null> => {
  */
 const soterAuthLogin = (soterAuth: UTSJSONObject): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
-    // #ifdef APP
+    // #ifdef APP-HARMONY
     if(!(soterAuth['enabled'] as boolean)) {
       reject('请登录后开启' + soterAuth['name'] as string + '识别')
       return
