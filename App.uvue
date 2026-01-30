@@ -83,16 +83,16 @@
                 let icon: string = ''
                 if(mode == 'fingerPrint') {
                   name = '指纹'
-                  iconSelect = '/static/images/icon/fingerPrint_.png'
-                  icon = '/static/images/icon/fingerPrint.png'
+                  iconSelect = '/static/images/svg/fingerPrint_.png'
+                  icon = '/static/images/svg/fingerPrint.png'
                 } else if(mode == 'facial') {
                   name = '人脸'
-                  iconSelect = '/static/images/icon/facial_.png'
-                  icon = '/static/images/icon/facial.png'
+                  iconSelect = '/static/images/svg/facial_.png'
+                  icon = '/static/images/svg/facial.png'
                 } else if(mode == 'speech') {
                   name = '声纹'
-                  iconSelect = '/static/images/icon/speech_.png'
-                  icon = '/static/images/icon/speech.png'
+                  iconSelect = '/static/images/svg/speech_.png'
+                  icon = '/static/images/svg/speech.png'
                 }
                 let auth: UTSJSONObject = soterAuth.length > 0 ? soterAuth[index] : { mode, name, iconSelect, icon, enabled: null }
                 // 2、获取设备内是否录入对应的生物信息（比如指纹、人脸）
