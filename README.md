@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center">
     <img src="https://gitee.com/lcm742320521/ruoyi-app/raw/master/static/images/logo/logo.png" alt="" />
 </p>
@@ -58,3 +59,7 @@ ruoyi-app
 
 ## 版本要求
 请使用使用 HBuilderX（v4.87+）打开项目。
+=======
+# uni-app-x
+uniapp x
+>>>>>>> 7b5bfbd397eec602190d6a53d7e0b15a3dee664f
