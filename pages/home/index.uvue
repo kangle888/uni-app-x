@@ -14,16 +14,8 @@
     return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
   })
 
-  onReady((): void => {
-    console.error('onReady..')
-
-    // type IModalMsg = (title: string, duration: number | null) => void
-
-    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token']);
-    // (app.vm!.$store['setToken'] as (token: string) => void)('123')
-    // console.error((app.vm!.$store['state'] as UTSJSONObject)['token']);
-
-    // (app.vm!.$modal['msgSuccess'] as IModalMsg)('123', null)
+  onReady(() => {
+    // 页面就绪
   })
 </script>
 

@@ -90,7 +90,8 @@
     uni.showActionSheet({
     	itemList: textThemes.value,
     	success: (res: ShowActionSheetSuccess): void => {
-        (app.vm!.$store['changeTheme'] as (appTheme: 'auto' | 'light' | 'dark' | null) => void)(valueThemes.value[res.tapIndex])
+        const themeValue = valueThemes.value[res.tapIndex] as 'auto' | 'light' | 'dark'
+        ;(app.vm!.$store['changeTheme'] as (appTheme: 'auto' | 'light' | 'dark' | null) => void)(themeValue)
         textTheme.value = textThemes.value[res.tapIndex]
     	}
     } as ShowActionSheetOptions)

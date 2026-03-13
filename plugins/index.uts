@@ -4,7 +4,7 @@ import tab from '@/utils/tab'
 
 export default definePlugin({
   install(app) {
-    app.config.globalProperties.$store = store
+    app.config.globalProperties.$store = store as any
     app.config.globalProperties.$modal = modal
     app.config.globalProperties.$tab = tab
 
