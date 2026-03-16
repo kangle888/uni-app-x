@@ -1,5 +1,5 @@
 {
-	"appid": "",
+	"appid": "__UNI__210711F",
 	"name": "ruoyi-app",
 	"description": "若依管理系统",
 	"versionName": "2026.01",
@@ -36,5 +36,10 @@
 		},
 		"usingComponents": true
 	},
-	"vueVersion": "3"
+	"vueVersion": "3",
+	"web": {
+		"router": {
+			"mode": ""
+		}
+	}
 }

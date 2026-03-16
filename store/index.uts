@@ -80,6 +80,15 @@ const pwdLogin = (userInfo: UTSJSONObject): Promise<any | null> => {
   setCache(cacheKey.AppUserInfo as string, { username, password } as UTSJSONObject)
   // #endif
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
+    // 模拟登录成功
+    const mockToken = "mock_token_123456"
+    setCache(cacheKey.AppToken as string, mockToken)
+    setToken(mockToken)
+    setTimeout(() => {
+      resolve(null)
+    }, 500)
+    
+    /* 先注释真实的接口联调
     loginApi(username, password, code, uuid, false).then((response: any | null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
       setCache(cacheKey.AppToken as string, res['access_token'] as string)
@@ -88,6 +97,7 @@ const pwdLogin = (userInfo: UTSJSONObject): Promise<any | null> => {
     }).catch((error?: any) => {
       reject(error)
     })
+    */
   })
 }
 
@@ -134,6 +144,24 @@ const soterAuthLogin = (soterAuth: UTSJSONObject): Promise<any | null> => {
  */
 const getUserInfo = (): Promise<any | null> => {
   return new Promise<any | null>((resolve: (value: any | null) => void, reject: (error?: any) => void) => {
+    // 模拟获取用户信息
+    const mockRoles = ['admin']
+    const mockPermissions = ['*:*:*']
+    const mockUser: UTSJSONObject = {
+      nickName: '模拟用户',
+      avatar: ''
+    }
+    
+    setRoles(mockRoles)
+    setPermissions(mockPermissions)
+    setName(mockUser['nickName'] as string)
+    setAvatar('/static/images/avatar.jpg')
+    
+    setTimeout(() => {
+      resolve(null)
+    }, 300)
+
+    /* 先注释真实的接口联调
     getUserInfoApi().then((response: any | null): void => {
       const res: UTSJSONObject = response as UTSJSONObject
       const user: UTSJSONObject = res['user'] as UTSJSONObject
@@ -145,6 +173,7 @@ const getUserInfo = (): Promise<any | null> => {
     }).catch((error?: any) => {
       reject(error)
     })
+    */
   })
 }
 
