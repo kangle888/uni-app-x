@@ -52,6 +52,9 @@
 
   const app = getApp()
 
+  const store = app.vm!.$store as UTSJSONObject
+  const state: UTSJSONObject = store['state'] as UTSJSONObject
+
   const codeUrl = ref('')
   const hidePwd = ref(true)
   const captchaEnabled = ref(true)
@@ -65,7 +68,7 @@
   } as UTSJSONObject)
 
   const theme = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+    return state['theme'] != null ? (state['theme'] as string) : ''
   })
 
   /**
@@ -99,7 +102,8 @@
   function loginSuccess(): void {
     (app.vm!.$modal['msgSuccess'] as (title: string, duration: number | null) => void)('登录成功', null)
     setTimeout((): void => {
-      (app.vm!.$store['getUserInfo'] as () => Promise<any | null>)().then((): void => {
+        const getUserInfoFunc = store['getUserInfo'] as (() => Promise<UTSJSONObject | null>)
+      getUserInfoFunc().then((): void => {
         // 跳转首页
         (app.vm!.$tab['reLaunch'] as (url: string) => void)('/pages/home/index')
       })
@@ -118,7 +122,8 @@
       (app.vm!.$modal['msgError'] as (title: string, duration: number | null) => void)('请输入验证码', null)
       return
     }
-    (app.vm!.$store['pwdLogin'] as (userInfo: UTSJSONObject) => Promise<any | null>)(loginForm).then((): void => {
+    const pwdLoginFunc = store['pwdLogin'] as (userInfo: UTSJSONObject) => Promise<any | null>
+    pwdLoginFunc(loginForm).then((): void => {
       loginSuccess()
     }).catch(() => {
       if (captchaEnabled.value) {
@@ -148,7 +153,8 @@
    */
   function handleSoterAuth(soterAuth: UTSJSONObject): void {
     // #ifdef APP
-    (app.vm!.$store['soterAuthLogin'] as (soterAuth: UTSJSONObject) => Promise<any | null>)(soterAuth).then((): void => {
+    const soterAuthLoginFunc = store['soterAuthLogin'] as (soterAuth: UTSJSONObject) => Promise<any | null>
+    soterAuthLoginFunc(soterAuth).then((): void => {
       loginSuccess()
     }).catch((err?: any) => {
       if(typeof err == "string") {

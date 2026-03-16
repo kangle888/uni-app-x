@@ -21,11 +21,13 @@
   import cacheKey, { getCache, setCache } from '@/utils/cache'
 
   const app = getApp()
+  const store = app.vm!.$store as UTSJSONObject
+  const state = store['state'] as UTSJSONObject
 
   const soterAuthList = ref([] as Array<UTSJSONObject>)
 
   const theme = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+    return state['theme'] as string
   })
 
   /**

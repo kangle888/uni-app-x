@@ -48,9 +48,11 @@
 
 <script lang="uts" setup>
   const app = getApp()
+  const store = app.vm!.$store as UTSJSONObject
+  const state: UTSJSONObject = store['state'] as UTSJSONObject
 
   const theme = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+    return state['theme'] != null ? (state['theme'] as string) : ''
   })
 
   function close(): void {

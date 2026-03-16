@@ -65,13 +65,19 @@
   ] as Array<UTSJSONObject>)
 
   const theme = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+    const store = app.vm!.$store as UTSJSONObject
+    const state = store['state'] as UTSJSONObject
+    return state['theme'] as string
   })
   const avatar = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['avatar'] as string
+    const store = app.vm!.$store as UTSJSONObject
+    const state = store['state'] as UTSJSONObject
+    return state['avatar'] as string
   })
   const name = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['name'] as string
+    const store = app.vm!.$store as UTSJSONObject
+    const state = store['state'] as UTSJSONObject
+    return state['name'] as string
   })
 
   /**

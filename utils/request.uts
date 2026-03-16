@@ -4,7 +4,6 @@ import cacheKey, { getCache } from '@/utils/cache'
 import errorCode from '@/utils/errorCode'
 import { tansParams } from '@/utils'
 import modal from '@/utils/modal'
-import { handleMock } from '@/utils/mock'
 
 export type IHeaders = {
   isToken: boolean
@@ -28,22 +27,22 @@ type IResponse = {
 
 const request = (conf: IRequest): Promise<any | null> => {
   // mock
-  if (config.mock == true) {
-    const mockRes = handleMock({
-      url: conf.url,
-      method: conf.method,
-      data: conf.data ?? null
-    } as UTSJSONObject)
-    if (mockRes != null) {
-      return new Promise<any | null>((resolve, reject) => {
-        if (mockRes.code == 200) {
-          resolve(mockRes.data)
-        } else {
-          reject(mockRes.description)
-        }
-      })
-    }
-  }
+  // if (config.mock == true) {
+  //   const mockRes = handleMock({
+  //     url: conf.url,
+  //     method: conf.method,
+  //     data: conf.data ?? null
+  //   } as UTSJSONObject)
+  //   if (mockRes != null) {
+  //     return new Promise<any | null>((resolve, reject) => {
+  //       if (mockRes.code == 200) {
+  //         resolve(mockRes.data)
+  //       } else {
+  //         reject(mockRes.description)
+  //       }
+  //     })
+  //   }
+  // }
 
   // 是否需要设置 token
   const isToken: boolean = conf.headers?.isToken == false

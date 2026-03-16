@@ -41,6 +41,8 @@
   import cacheKey, { getCache } from '@/utils/cache'
 
   const app = getApp()
+  const store = app.vm!.$store as UTSJSONObject
+  const state = store['state'] as UTSJSONObject
 
   const isSupportSoterAuth = ref(false)
   const textTheme = ref('')
@@ -48,7 +50,7 @@
   const valueThemes = ref(['auto', 'light', 'dark'] as Array<string>)
 
   const theme = computed<string>((): string => {
-    return (app.vm!.$store['state'] as UTSJSONObject)['theme'] as string
+    return state['theme'] as string
   })
 
   /**
@@ -91,7 +93,8 @@
     	itemList: textThemes.value,
     	success: (res: ShowActionSheetSuccess): void => {
         const themeValue = valueThemes.value[res.tapIndex] as 'auto' | 'light' | 'dark'
-        ;(app.vm!.$store['changeTheme'] as (appTheme: 'auto' | 'light' | 'dark' | null) => void)(themeValue)
+        const changeTheme = store['changeTheme'] as (appTheme: 'auto' | 'light' | 'dark' | null) => void
+        changeTheme(themeValue)
         textTheme.value = textThemes.value[res.tapIndex]
     	}
     } as ShowActionSheetOptions)
@@ -112,7 +115,8 @@
 
   function handleLogout(): void {
     (app.vm!.$modal['confirm'] as (content: string) => Promise<boolean>)('确认退出登录？').then(res => {
-      (app.vm!.$store['logout'] as () => Promise<any | null>)().then((): void => {
+      const logout = store['logout'] as () => Promise<any | null>
+      logout().then((): void => {
         (app.vm!.$tab['reLaunch'] as (url: string) => void)('/pages/login/index')
       }).catch(() => {})
     }).catch(() => {})
