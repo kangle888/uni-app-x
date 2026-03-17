@@ -2,103 +2,104 @@
   <view :class="theme + ' page'">
     <!-- 方案1: 外部 H5 链接 -->
     <!-- <web-view id="myWebview" src="https://你的H5域名.com/" @message="handleMessage" style="flex: 1;"></web-view> -->
-    
+
     <!-- 方案2: 本地局域网 H5 链接 (用于本地调试) -->
     <!-- 注意: 本地调试时，请使用局域网 IP (如 192.168.1.100)，不要用 localhost -->
-    <web-view 
+    <web-view
       ref="myWebview"
-      id="myWebview" 
-      :src="h5Url" 
-      @message="handleMessage" 
-      style="flex: 1;"
+      id="myWebview"
+      :src="h5Url"
+      @message="handleMessage"
+      style="flex: 1"
     ></web-view>
   </view>
 </template>
 
 <script lang="uts" setup>
-  const app = getApp()
+const app = getApp();
 
-  const store = app.vm!.$store as UTSJSONObject
-  const state = store['state'] as UTSJSONObject
+const store = app.vm!.$store as UTSJSONObject;
+const state = store["state"] as UTSJSONObject;
 
-  const theme = computed<string>((): string => {
-    return state['theme'] != null ? (state['theme'] as string) : ''
-  })
-  
-  // 这里配置你要加载的 H5 页面地址
-  // 建议从配置文件或者环境变量中读取
-  const h5Url = ref('https://uniapp.dcloud.net.cn/')
+const theme = computed<string>((): string => {
+  return state["theme"] != null ? (state["theme"] as string) : "";
+});
 
-  // WebView 组件的 ref
-  const myWebview = ref<UniWebViewElement | null>(null)
+// 这里配置你要加载的 H5 页面地址
+// 建议从配置文件或者环境变量中读取
+const h5Url = ref("https://uniapp.dcloud.net.cn/");
 
-  // App 端主动向 H5 发送数据
-  const sendDataToH5 = () => {
-    const token = state['token'] as string
-    const actualToken = token != '' ? token : 'mock_token_for_h5'
-    
-    // uni-app x 中，通过 vue 的 ref 获取内置组件节点
-    if (myWebview.value != null) {
-      myWebview.value!.evalJS(`if(window.receiveAppToken) { window.receiveAppToken('${actualToken}') }`)
-      console.log('App 已尝试向 H5 发送 Token:', actualToken)
-    } else {
-      console.log('未找到 myWebview 节点')
+// WebView 组件的 ref
+const myWebview = ref<UniWebViewElement | null>(null);
+
+// App 端主动向 H5 发送数据
+const sendDataToH5 = () => {
+  const token = state["token"] as string;
+  const actualToken = token != "" ? token : "mock_token_for_h5";
+
+  // uni-app x 中，通过 vue 的 ref 获取内置组件节点
+  if (myWebview.value != null) {
+    myWebview.value!.evalJS(
+      `if(window.receiveAppToken) { window.receiveAppToken('${actualToken}') }`,
+    );
+    console.log("App 已尝试向 H5 发送 Token:", actualToken);
+  } else {
+    console.log("未找到 myWebview 节点");
+  }
+};
+
+onReady(() => {
+  // 页面就绪时，可以主动给 H5 发送数据，例如把 Token 传给 H5
+  setTimeout(() => {
+    sendDataToH5();
+  }, 1000);
+});
+
+/**
+ * 接收 H5 端发送过来的消息
+ */
+const handleMessage = (event: any) => {
+  // UTS 中 Any 直接点 detail 会报错，需要做一层强制类型转换
+  const eventObj = event as UTSJSONObject;
+  const detail = eventObj["detail"] as UTSJSONObject;
+  const messages = detail["data"] as any[];
+
+  if (messages.length > 0) {
+    const msgData = messages[0] as UTSJSONObject;
+    console.log("App 端接收到 H5 的消息:", msgData);
+
+    const action = msgData["action"] as string | null;
+
+    // 根据 H5 传来的指令，执行 App 端原生功能
+    if (action === "openCamera") {
+      uni.chooseImage({
+        count: 1,
+        success: (res) => {
+          console.log("App 拍照/选图成功:", res);
+          // 选图成功后，你可以再通过 evalJS 把图片路径传回给 H5
+          uni.showToast({ title: "已打开原生相册", icon: "none" });
+        },
+      });
+    } else if (action === "logout") {
+      // H5 请求退出登录
+      uni.showModal({
+        title: "提示",
+        content: "H5 请求退出登录",
+        success: (res) => {
+          // 走原生退出逻辑
+        },
+      });
     }
   }
-
-  onReady(() => {
-    // 页面就绪时，可以主动给 H5 发送数据，例如把 Token 传给 H5
-    setTimeout(() => {
-      sendDataToH5()
-    }, 1000)
-  })
-  
-  /**
-   * 接收 H5 端发送过来的消息
-   */
-  const handleMessage = (event: any) => {
-    // UTS 中 Any 直接点 detail 会报错，需要做一层强制类型转换
-    const eventObj = event as UTSJSONObject
-    const detail = eventObj['detail'] as UTSJSONObject
-    const messages = detail['data'] as any[]
-    
-    if (messages.length > 0) {
-      const msgData = messages[0] as UTSJSONObject
-      console.log('App 端接收到 H5 的消息:', msgData)
-      
-      const action = msgData['action'] as string | null
-      
-      // 根据 H5 传来的指令，执行 App 端原生功能
-      if (action === 'openCamera') {
-        uni.chooseImage({
-          count: 1,
-          success: (res) => {
-            console.log('App 拍照/选图成功:', res)
-            // 选图成功后，你可以再通过 evalJS 把图片路径传回给 H5
-            uni.showToast({ title: '已打开原生相册', icon: 'none' })
-          }
-        })
-      } else if (action === 'logout') {
-        // H5 请求退出登录
-        uni.showModal({
-          title: '提示',
-          content: 'H5 请求退出登录',
-          success: (res) => {
-             // 走原生退出逻辑
-          }
-        })
-      }
-    }
-  }
-
+};
 </script>
 
 <style lang="scss">
-  .page {
-    /* 铺满整个屏幕，让里面的 web-view 也有高度 */
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100%;
-  }
+.page {
+  /* 铺满整个屏幕，让里面的 web-view 也有高度 */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
 </style>
